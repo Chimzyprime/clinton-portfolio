@@ -1,38 +1,23 @@
-import SocialLinks from "@/components/SocialLinks";
-import HeroTexts from "@/components/HeroTexts";
-import HeroImage from "@/components/HeroImage";
-import GithubBtn from "@/components/animation/GithubBtn";
-import DownLoadResumeBtn from "@/components/DownLoadResumeBtn";
-import FramerWrapper from "@/components/animation/FramerWrapper";
+import { Hero } from "@/components/Hero";
+import { Work } from "@/components/Work";
+import { Services } from "@/components/Services";
+import { Writing } from "@/components/Writing";
+import { Toolkit } from "@/components/Toolkit";
+import { About } from "@/components/About";
+import { Contact } from "@/components/Contact";
 
-
+// A single static page: every section renders at build time, so there is no
+// client-side data fetching to delay content or shift layout.
 export default function Home() {
   return (
     <>
-      {/* LEFT SIDE  */}
-      <FramerWrapper
-        className=" h-full w-auto flex flex-col justify-start gap-4"
-        y={0}
-        x={-100}
-      >
-        <HeroTexts />
-        <div className="h-fit w-full p-4 flex gap-4">
-          <SocialLinks />
-        </div>
-        <DownLoadResumeBtn />
-      </FramerWrapper>
-      {/* RIGHT SIDE image  */}
-      <FramerWrapper
-        className="h-full w-[47%] relative block   max-lg:hidden"
-        y={0}
-        x={100}
-      >
-        {/* IMAGE  */}
-        <HeroImage />
-      </FramerWrapper>
-
-      {/* GITHUB BUTTON  */}
-      <GithubBtn />
+      <Hero />
+      <Work />
+      <Services />
+      <Writing />
+      <Toolkit />
+      <About />
+      <Contact />
     </>
   );
 }

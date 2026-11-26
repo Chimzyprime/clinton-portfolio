@@ -1,16 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    serverExternalPackages: [
-        '@react-email/render',
-    ],
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'cdn.jsdelivr.net',
-            },
-        ],
-    },
-}
+  // Surfaces unsafe lifecycle usage early; no other special config is needed
+  // for a static portfolio.
+  reactStrictMode: true,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

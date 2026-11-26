@@ -1,60 +1,38 @@
-# Project Portfolio
+# Clinton Chimaroke — portfolio
 
-A simple and Beautiful Porfolio made with Nextjs and Shadcn Ui.
+Swiss-minimalist, dark-first portfolio with a light editorial theme.
+Next.js (App Router) · TypeScript · Tailwind CSS. No runtime dependencies beyond React and Next.
 
-![Demo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u7eq68h0uvs6xqgw3yqe.jpeg)
+## Edit your content
 
-## Getting Started
+Everything you will want to change is in **`src/data/site.ts`**: name, services, work, book, toolkit, about, links.
+Layout code in `src/components/` only renders what that file contains.
 
-First, run the development server:
+### Add an image to a project
+
+1. Put the file in `public/work/` (for example `public/work/talorify.jpg`).
+2. In `src/data/site.ts`, add to that project:
+
+   ```ts
+   image: { src: "/work/talorify.jpg", alt: "Talorify logo on a cream background", width: 1600, height: 1000 },
+   ```
+
+   `width` and `height` must be the file's real pixel size. They let the browser reserve the space, which keeps layout shift at zero.
+
+### Add a project link or the book link
+
+Set `href` on the project, or uncomment `href` on `book`. The link only appears when it is set.
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Notes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Configuration
-
-This project uses a centralized configuration approach for all personal information. The main configuration file is located at:
-
-```
-src/config/portfolio.config.ts
-```
-
-### Configuration Structure
-
-The configuration file contains the following sections:
-
-- **Basic Information**: Name, title, description, location
-- **Contact Information**: Email and other contact details
-- **Social Media Links**: Links to various social media profiles
-- **SEO Information**: Keywords, metadata, and SEO-related settings
-- **About Information**: Bio, hobbies, and personal details
-- **Skills**: Programming languages, frameworks, tools, and professional roles
-- **Education**: Academic background and qualifications
-- **Projects**: Portfolio of projects with descriptions and links
-- **More Links**: Additional external links and resources
-
-### Customizing Your Portfolio
-
-To personalize the portfolio, simply edit the values in the `portfolio.config.ts` file. All changes will be reflected throughout the site automatically without having to modify multiple files.
-
-Example usage in a component:
-
-```typescript
-import { portfolioConfig } from "@/config/portfolio.config";
-
-// Access configuration values
-const { name, title } = portfolioConfig;
-```
+- Theme: dark by default; the choice is saved in `localStorage` and applied before first paint (no flash).
+- Colours and contrast ratios are documented at the top of `src/app/globals.css`.
+- Deploys on Vercel: push to `main`.

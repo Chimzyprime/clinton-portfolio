@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+
+@layer base {
+  :root {
+    /* Obsidian base */
+    --background: 240 13% 5%;
+    --foreground: 210 20% 96%;
+
+    --card: 240 12% 8%;
+    --card-foreground: 210 20% 96%;
+
+    --popover: 240 12% 8%;
+    --popover-foreground: 210 20% 96%;
+
+    /* Neon cyan as primary accent */
+    --primary: 182 100% 50%;
+    --primary-foreground: 240 13% 5%;
+    --primary-sky: 182 100% 50%;
+
+    /* Neon purple as secondary accent */
+    --secondary: 271 91% 65%;
+    --secondary-foreground: 240 13% 5%;
+
+    --muted: 240 10% 14%;
+    --muted-foreground: 215 15% 65%;
+
+    /* Neon green as tertiary accent (used selectively via accent-green utility) */
+    --accent: 140 100% 50%;
+    --accent-foreground: 240 13% 5%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 18%;
+    --ring: 182 100% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 13% 5%;
+    --foreground: 210 20% 96%;
+
+    --card: 240 12% 8%;
+    --card-foreground: 210 20% 96%;
+
+    --popover: 240 12% 8%;
+    --popover-foreground: 210 20% 96%;
+
+    --primary: 182 100% 50%;
+    --primary-foreground: 240 13% 5%;
+
+    --secondary: 271 91% 65%;
+    --secondary-foreground: 240 13% 5%;
+
+    --muted: 240 10% 14%;
+    --muted-foreground: 215 15% 65%;
+
+    --accent: 140 100% 50%;
+    --accent-foreground: 240 13% 5%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 10% 20%;
+    --input: 240 10% 18%;
+    --ring: 182 100% 50%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* CUSTOM CSS  */
+
+/* Glassmorphism panels for cards/nav */
+.glass {
+  background: hsla(240, 12%, 14%, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid hsla(182, 100%, 50%, 0.15);
+}
+
+/* Neon text/border utilities */
+.text-neon-green { color: hsl(140 100% 50%); }
+.text-neon-cyan { color: hsl(182 100% 50%); }
+.text-neon-purple { color: hsl(271 91% 65%); }
+.border-neon-green { border-color: hsl(140 100% 50%); }
+.glow-cyan { box-shadow: 0 0 24px hsla(182, 100%, 50%, 0.25); }
+.glow-green { box-shadow: 0 0 24px hsla(140, 100%, 50%, 0.25); }
+.glow-purple { box-shadow: 0 0 24px hsla(271, 91%, 65%, 0.25); }
+.name_underline::after{
+  content: "";
+  display: block;
+  width: 6rem;
+  height: .6rem;
+  background-color: hsl(var(--primary-sky));
+}
+.icon_underline::after{
+  content: "";
+    position: absolute;
+    top: 100%;
+    display: block;
+    width: 2rem;
+    height: .3rem;
+    background-color: hsl(var(--primary-sky));
+    margin-bottom: 2rem;
+}
+.education_point::before{
+  content: "";
+    display: block;
+    position: absolute;
+    top: 46.7%;
+    left: -7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: hsl(var(--primary-sky));
+    outline: 3px solid hsl(var(--primary));
+    box-shadow: 0 2px 5px 2px hsl(var(--primary-sky));
+}
+/* TEXT ROTATOR STYLES  */
+.animate-text-slide {
+  animation: text-slide 12.5s cubic-bezier(0.83, 0, 0.17, 1) infinite;
+}
+
+@keyframes text-slide {
+  0%,
+  16% {
+    transform: translateY(0%);
+  }
+
+  20%,
+  36% {
+    transform: translateY(-16.66%);
+  }
+
+  40%,
+  56% {
+    transform: translateY(-33.33%);
+  }
+
+  60%,
+  76% {
+    transform: translateY(-50%);
+  }
+
+  80%,
+  96% {
+    transform: translateY(-66.66%);
+  }
+
+  100% {
+    transform: translateY(-83.33%);
+  }
+}

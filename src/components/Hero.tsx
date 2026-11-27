@@ -25,6 +25,7 @@ const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 /* The headline, split into its three lines for the reveal. Must read the
    same as site.hero.headline. */
 const HEADLINE_LINES = ["I build brands", "and digital", "experiences."];
+const HIGHLIGHT = "brands";
 
 export function Hero() {
   return (
@@ -52,7 +53,15 @@ export function Hero() {
             {HEADLINE_LINES.map((line, i) => (
               <span key={line} className="line-mask">
                 <span className="line-inner" style={{ ["--i" as string]: i }}>
-                  {line}
+                  {line.includes(HIGHLIGHT) ? (
+                    <>
+                      {line.split(HIGHLIGHT)[0]}
+                      <span className="text-highlight">{HIGHLIGHT}</span>
+                      {line.split(HIGHLIGHT)[1]}
+                    </>
+                  ) : (
+                    line
+                  )}
                   {i < HEADLINE_LINES.length - 1 ? " " : ""}
                 </span>
               </span>

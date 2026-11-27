@@ -32,6 +32,7 @@
   --border-strong: #44423e;
   --accent: var(--foreground); /* neutral placeholder */
   --accent-foreground: var(--background);
+  --highlight: #e2574c;
   color-scheme: dark;
 }
 
@@ -48,6 +49,7 @@
   --border-strong: #b9b3a6;
   --accent: var(--foreground);
   --accent-foreground: var(--background);
+  --highlight: #b3302a;
   color-scheme: light;
 }
 
@@ -327,6 +329,7 @@
 }
 /* Headline line reveal: each line rises out of an invisible mask, once.
    Padding/negative margin keep descenders from being clipped. */
+.text-highlight { color: var(--highlight); }
 .line-mask {
   display: block;
   overflow: hidden;

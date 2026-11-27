@@ -486,7 +486,7 @@
     rotateY(calc(var(--o) * var(--rot) * -1))
     scale(calc(1 - var(--a) * 0.06));
   opacity: calc(1 - var(--a) * 0.4);
-  filter: saturate(calc(1 - var(--a) * 0.35));
+  filter: blur(calc(var(--a) * 4px)) saturate(calc(1 - var(--a) * 0.35));
   z-index: calc(10 - var(--a));
   transition: transform 850ms cubic-bezier(0.45, 0, 0.15, 1), opacity 850ms cubic-bezier(0.45, 0, 0.15, 1), filter 850ms ease;
   will-change: transform;

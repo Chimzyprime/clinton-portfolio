@@ -1,4 +1,5 @@
 import { site } from "@/data/site";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Footer() {
   return (
@@ -7,9 +8,12 @@ export function Footer() {
         <p className="label">
           © {new Date().getFullYear()} {site.name}
         </p>
-        <a href="#main" className="label link">
-          Back to top ↑
-        </a>
+        <div className="flex items-center gap-6">
+          <a href="#main" className="label link">
+            Back to top ↑
+          </a>
+          <ThemeToggle />
+        </div>
       </div>
     </footer>
   );

@@ -33,12 +33,17 @@ export interface WorkItem {
 }
 
 /**
- * Hero portrait. Leave as `undefined` until you have the photo; the hero then
- * shows a same-sized placeholder so the layout is identical either way.
- * Put the file in /public (e.g. /public/portrait.jpg) and set its real pixel
- * width and height. A 4:5 portrait (e.g. 1200 x 1500) fits the frame best.
+ * Hero portrait: a transparent cutout (WebP with alpha) in /public.
+ * width and height MUST be the file's real pixel size: they reserve the space
+ * before the image loads, so nothing shifts. The lighting behind it is CSS
+ * (see .portrait-light in globals.css), not part of the image.
  */
-export const portrait: WorkImage | undefined = undefined;
+export const portrait: WorkImage = {
+  src: "/portrait.webp",
+  alt: "Portrait of Nwachukwu Clinton Chimaroke in a black suit, white shirt and black tie",
+  width: 1145,
+  height: 1254,
+};
 
 export const site = {
   name: "Nwachukwu Clinton Chimaroke",

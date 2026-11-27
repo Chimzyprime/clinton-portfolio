@@ -1,27 +1,31 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, IBM_Plex_Mono, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { site } from "@/data/site";
-import { Header } from "@/components/Header";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-// next/font self-hosts these files and generates a size-adjusted fallback
-// font, so the swap from fallback to web font does not move any text.
-const sans = Inter({
-  subsets: ["latin"],
+// Font files live in src/fonts (latin subset), so the build never has to
+// download anything. next/font/local still generates size-adjusted fallbacks,
+// so swapping from fallback to web font does not move any text.
+const sans = localFont({
+  src: "../fonts/inter-latin-wght-normal.woff2",
+  weight: "100 900",
   variable: "--font-sans",
   display: "swap",
 });
 // Display face for headings. Weights limited to what the design uses.
-const display = Manrope({
-  subsets: ["latin"],
-  weight: ["600", "700"],
+const display = localFont({
+  src: [
+    { path: "../fonts/manrope-latin-600-normal.woff2", weight: "600" },
+    { path: "../fonts/manrope-latin-700-normal.woff2", weight: "700" },
+  ],
   variable: "--font-display",
   display: "swap",
 });
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const mono = localFont({
+  src: "../fonts/ibm-plex-mono-latin-400-normal.woff2",
+  weight: "400",
   variable: "--font-mono",
   display: "swap",
 });
@@ -48,18 +52,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Colours the mobile browser bar to match the default (warm light) theme.
-  themeColor: "#f6f2ea",
+  // Colours the mobile browser bar to match the default (dark) theme.
+  themeColor: "#12110e",
 };
 
 /**
  * Runs before first paint. Reads the saved theme and sets it on <html>, so a
- * visitor who chose "dark" never sees a light flash (or a layout jump).
- * Light (warm off-white) is the default. Wrapped in try/catch because storage can be blocked.
+ * visitor who chose "light" never sees a dark flash (or a layout jump).
+ * Dark is the default; warm light is the alternate. Wrapped in try/catch because storage can be blocked.
  */
 const themeScript = `
 (function () {
-  var theme = "light";
+  var theme = "dark";
   try {
     var saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") theme = saved;
@@ -78,7 +82,7 @@ export default function RootLayout({
     // React hydrates, which is intentional.
     <html
       lang="en"
-      data-theme="light"
+      data-theme="dark"
       className={`${sans.variable} ${display.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
@@ -93,7 +97,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
+        <Navbar />
         <main id="main">{children}</main>
         <Footer />
       </body>

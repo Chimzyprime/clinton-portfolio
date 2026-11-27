@@ -7,7 +7,7 @@ export function Services() {
       <ul className="grid gap-x-12 gap-y-12 sm:grid-cols-2">
         {services.map((service) => (
           <li key={service.title} className="border-t border-fg pt-5">
-            <h3 className="text-xl font-medium tracking-tight">
+            <h3 className="text-xl font-semibold tracking-tight">
               {service.title}
             </h3>
             <p className="mt-3 max-w-md text-muted">{service.description}</p>

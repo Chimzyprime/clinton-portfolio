@@ -4,15 +4,14 @@
 
 /*
   THEME TOKENS
-  Light (warm off-white editorial paper) is the default, and the fallback if
-  the theme script never runs. Dark is the alternate theme. The accent is a
+  Dark (warm near-black) is the default, and the fallback if the theme
+  script never runs. Warm off-white editorial paper is the alternate theme. The accent is a
   muted gold. Contrast ratios (text on --bg), measured with the WCAG formula:
     light: fg 16.4:1 | muted 6.2:1 | accent 4.8:1
     dark : fg 16.2:1 | muted 7.4:1 | accent 9.2:1
   All text clears WCAG AA (4.5:1). --line is for decorative hairlines only
   (about 1.3:1). Anything interactive uses --fg or --accent for its outline.
 */
-:root,
 [data-theme="light"] {
   --bg: #f6f2ea;
   --fg: #161512;
@@ -22,6 +21,7 @@
   color-scheme: light;
 }
 
+:root,
 [data-theme="dark"] {
   --bg: #12110e;
   --fg: #f2ede3;
@@ -87,6 +87,152 @@
 [data-theme="dark"] [data-show-in="light"],
 [data-theme="light"] [data-show-in="dark"] {
   display: none;
+}
+
+/*
+  HERO LIGHTING
+  The hero is always dark, whatever the page theme, so the light reads. The
+  coloured light is drawn here with layered radial gradients BEHIND the
+  transparent portrait, never as a filter over the face:
+    ::before  blue key glow, behind the subject's left side
+    ::after   red glow, behind the right side
+    .portrait-core  a soft neutral pool that seats the figure in the scene
+  Each light is a radial gradient fading to transparent, plus a light blur,
+  so it blends into the background with no visible edge. Nothing animates.
+*/
+.portrait-light {
+  position: relative;
+  isolation: isolate;
+}
+.portrait-light::before,
+.portrait-light::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(40px);
+}
+.portrait-light::before {
+  /* Blue: larger and brighter, sits behind the left shoulder and head. */
+  left: -18%;
+  top: 4%;
+  width: 78%;
+  height: 82%;
+  background: radial-gradient(
+    closest-side,
+    rgb(30 110 255 / 0.55),
+    rgb(30 110 255 / 0.22) 55%,
+    transparent
+  );
+}
+.portrait-light::after {
+  /* Red: smaller and quieter, behind the right shoulder. */
+  right: -16%;
+  top: 18%;
+  width: 62%;
+  height: 72%;
+  background: radial-gradient(
+    closest-side,
+    rgb(235 40 35 / 0.45),
+    rgb(235 40 35 / 0.16) 55%,
+    transparent
+  );
+}
+.portrait-core {
+  position: absolute;
+  z-index: -1;
+  inset: 10% 18% 0 18%;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgb(70 80 110 / 0.35),
+    transparent
+  );
+  filter: blur(24px);
+}
+.portrait-img {
+  /* Two masks, intersected: the sides fade so the shoulders melt into the
+     dark (no vertical image edge), and the bottom fades so the body rises
+     out of the background instead of ending on a hard line. */
+  -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom, #000 70%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 14%,
+      #000 86%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom, #000 70%, transparent 100%);
+  mask-composite: intersect;
+  /* Subtle rim light: two soft coloured shadows hugging the silhouette's
+     outer edge (they fall outside the figure, not across the face). */
+  filter: drop-shadow(-10px 0 22px rgb(30 110 255 / 0.28))
+    drop-shadow(10px 0 22px rgb(235 40 35 / 0.22));
+}
+
+/*
+  NAVBAR (floating glass pill)
+  Slightly lighter charcoal than the page, mostly opaque so text stays
+  readable over the lit hero and every section. Once the page scrolls the
+  background firms up a little; only colour animates, never size or position.
+*/
+.nav-pill {
+  background: rgb(30 29 26 / 0.62);
+  border: 1px solid rgb(255 255 255 / 0.09);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.04) inset,
+    0 12px 32px -12px rgb(0 0 0 / 0.55);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease;
+}
+.nav-pill[data-scrolled="true"] {
+  background: rgb(30 29 26 / 0.84);
+  border-color: rgb(255 255 255 / 0.11);
+}
+/* Browsers without backdrop blur get a solid bar, so text is never lost. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-pill,
+  .nav-pill[data-scrolled="true"] {
+    background: rgb(30 29 26);
+  }
+}
+
+/* CTA: a quieter pill inside the pill, lifted by a hairline and a touch of
+   light. Hover warms the border to gold and nudges the arrow. */
+.nav-cta {
+  background: rgb(255 255 255 / 0.07);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease;
+}
+.nav-cta:hover {
+  background: rgb(255 255 255 / 0.11);
+  border-color: var(--accent);
+}
+.nav-cta-arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+.nav-cta:hover .nav-cta-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Focus ring sits just outside the rounded shape. */
+.nav-focus:focus-visible {
+  outline-offset: 2px;
 }
 
 /*

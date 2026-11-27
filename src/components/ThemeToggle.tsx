@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 type Theme = "dark" | "light";
 
 /**
- * Switches between the warm light (default) and dark themes.
+ * Switches between the dark (default) and warm light themes.
  *
  * Layout-shift note: the visible label ("Light" / "Dark") is swapped with CSS
  * keyed on <html data-theme>, not with React state, and the button has a fixed
@@ -19,11 +19,11 @@ export function ThemeToggle() {
   useEffect(() => {
     // Read what the pre-paint script already applied.
     const current = document.documentElement.getAttribute("data-theme");
-    setTheme(current === "dark" ? "dark" : "light");
+    setTheme(current === "light" ? "light" : "dark");
   }, []);
 
   function toggle() {
-    const next: Theme = theme === "dark" ? "light" : "dark";
+    const next: Theme = theme === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", next);
     try {
       localStorage.setItem("theme", next);
@@ -35,7 +35,7 @@ export function ThemeToggle() {
 
   // Screen-reader name states the action, not the current state.
   const label =
-    theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+    theme === "light" ? "Switch to dark theme" : "Switch to light theme";
 
   return (
     <button

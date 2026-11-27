@@ -14,7 +14,7 @@ export function Work() {
               <p className="label md:col-span-1 md:pt-1.5">
                 {String(i + 1).padStart(2, "0")}
               </p>
-              <h3 className="text-xl font-medium tracking-tight md:col-span-4">
+              <h3 className="text-xl font-semibold tracking-tight md:col-span-4">
                 {item.title}
               </h3>
               <p className="label md:col-span-3 md:pt-1.5">

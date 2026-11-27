@@ -11,23 +11,25 @@ const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
  *
  *  Left, one shared left edge, in this order:
  *    name → headline (h1) → professional title → description → CTAs
- *  Right: the portrait cutout as a bust, sitting on the hero's bottom edge.
+ *  Right: the portrait. On desktop it spans exactly from the top of the
+ *         headline to the bottom of the CTAs; on smaller screens it is a bust
+ *         on the hero's bottom edge. Studio lighting is CSS (globals.css).
  *
  * Below 1024px the columns stack (text first, then portrait), because the
  * headline needs the width. The hero follows the site theme.
  *
- * Layout-shift notes: the portrait's crop box reserves its space with
- * aspect-ratio; the headline size is a CSS clamp() resolved before
+ * Layout-shift notes: the portrait box gets its size from the layout
+ * (aspect-ratio on small screens, the text column's height on desktop); the headline size is a CSS clamp() resolved before
  * paint; the entrance animation only touches opacity and transform.
  */
 export function Hero() {
   return (
     <section aria-labelledby="hero-heading" className="relative overflow-hidden">
-      {/* No bottom padding: the portrait sits on the hero's bottom edge, which
-          meets the hairline at the top of the next section. */}
-      <div className="page-x grid gap-14 pt-28 md:pt-36 lg:min-h-[100svh] lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:pt-[8.5rem] xl:gap-20">
-        {/* LEFT: text column, vertically centred in the hero */}
-        <div className="lg:self-center lg:pb-24">
+      {/* Mobile: no bottom padding, the bust sits on the hero's bottom edge.
+          Desktop: the single row is vertically centred in the viewport. */}
+      <div className="page-x grid gap-14 pt-28 md:pt-36 lg:min-h-[100svh] lg:grid-cols-[1.1fr_0.9fr] lg:content-center lg:gap-12 lg:pb-20 lg:pt-[8.5rem] xl:gap-20">
+        {/* LEFT: text column. Its height sets the row height on desktop. */}
+        <div>
           {/* A. Name: visible first, deliberately quieter than the headline. */}
           <p
             className="reveal text-[0.9375rem] font-medium tracking-[0.02em] text-fg"
@@ -76,26 +78,23 @@ export function Hero() {
           </div>
         </div>
 
-        {/* RIGHT: portrait.
-            Mobile/tablet: in the flow, under the text, on the hero's bottom edge.
-            Desktop: anchored to the bottom-right of the hero and sized from the
-            viewport (46vw, 50vw from 1280px), so the bust has real presence.
-            It runs to the page edge (but stays inside the 1440px frame on
-            wider screens) and always leaves a clear gap from the headline. */}
-        <figure className="reveal-portrait portrait-light mx-auto w-full max-w-[24rem] self-end sm:max-w-[28rem] lg:absolute lg:bottom-0 lg:right-[max(0px,calc((100vw-1440px)/2))] lg:mx-0 lg:w-[46vw] lg:max-w-[820px] xl:w-[50vw]">
-          <div className="portrait-crop">
+        {/* RIGHT: portrait. The figure stretches to the row (the text
+            column's height); the box inside is positioned in CSS so its top
+            meets the headline and its bottom meets the CTAs. */}
+        <figure className="reveal-portrait portrait-light mx-auto w-full max-w-[24rem] self-end sm:max-w-[28rem] lg:mx-0 lg:max-w-none lg:self-stretch">
+          <div className="portrait-box">
             <Image
               src={portrait.src}
               alt={portrait.alt}
-              width={portrait.width}
-              height={portrait.height}
+              fill
               // Above the fold: fetch first, at higher quality than the
               // default 75 so skin and hair detail stay crisp.
               priority
               quality={90}
-              sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 46vw, (min-width: 640px) 28rem, 90vw"
-              className="block h-auto w-full"
+              sizes="(min-width: 1280px) 40vw, (min-width: 1024px) 42vw, (min-width: 640px) 28rem, 90vw"
+              className="object-cover object-top"
             />
+            <div aria-hidden="true" className="portrait-rim" />
           </div>
         </figure>
       </div>

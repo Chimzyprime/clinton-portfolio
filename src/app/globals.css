@@ -160,16 +160,20 @@
 
 /*
   PORTRAIT
-  The cutout's suit runs off the photo's left and right edges about 63% of
-  the way down. Fading those edges with masks is what made the portrait look
-  washed out (and, in light mode, boxed). Instead, .portrait-crop shows the
-  image only down to just above that point, so the silhouette is complete on
-  both sides, and the hero sits it on its bottom edge like a bust on a
-  baseline. No masks, filters, blend modes or opacity touch the photograph.
+  The image is never filtered, faded sideways or tinted as a whole. Layout:
+    - Mobile/tablet: a bust (cropped above where the suit meets the photo's
+      side edges) sitting on the hero's bottom edge.
+    - Desktop: the box spans exactly from the top of the headline to the
+      bottom of the CTA row, so picture and text start and end together. Its
+      bottom has a short fade so it does not end on a hard line.
 
-  The only added light is one faint pool per side, behind the head and
-  shoulders, in dark mode only. The photo's own blue/red rim light does the
-  rest. These sit outside the crop box, so they are never clipped square.
+  LIGHTING (art-directed studio light, blue camera-left, red camera-right)
+    1. .portrait-light::before / ::after: the light sources, soft pools behind
+       the subject that fall off into the page.
+    2. .portrait-rim: the light landing on the subject. A left-blue/right-red
+       gradient in "screen" blend mode, masked by the cutout's own alpha so it
+       only touches him, strongest at the edges and clear in the centre of
+       the face, so skin tone is not changed.
 */
 .portrait-light {
   position: relative;
@@ -182,33 +186,118 @@
   z-index: -1;
   pointer-events: none;
   border-radius: 9999px;
-  filter: blur(40px);
+  filter: blur(48px);
 }
 .portrait-light::before {
-  left: 2%;
-  top: 8%;
-  width: 52%;
-  height: 70%;
-  background: radial-gradient(closest-side, rgb(40 110 245 / 0.16), transparent);
+  /* Blue source behind his right shoulder (camera-left). */
+  left: -22%;
+  top: -4%;
+  width: 78%;
+  height: 96%;
+  background: radial-gradient(
+    closest-side,
+    rgb(40 110 255 / 0.5),
+    rgb(40 110 255 / 0.18) 55%,
+    transparent
+  );
 }
 .portrait-light::after {
-  right: 2%;
-  top: 14%;
-  width: 46%;
-  height: 64%;
-  background: radial-gradient(closest-side, rgb(225 45 40 / 0.12), transparent);
+  /* Red source behind his left shoulder (camera-right). */
+  right: -20%;
+  top: 6%;
+  width: 70%;
+  height: 90%;
+  background: radial-gradient(
+    closest-side,
+    rgb(235 45 40 / 0.42),
+    rgb(235 45 40 / 0.14) 55%,
+    transparent
+  );
 }
-/* On warm paper coloured light reads as a stain, so there is none. */
-[data-theme="light"] .portrait-light::before,
+/* On paper the same light is a soft tint, so it shows without staining. */
+[data-theme="light"] .portrait-light::before {
+  opacity: 0.55;
+}
 [data-theme="light"] .portrait-light::after {
-  display: none;
+  opacity: 0.5;
 }
 
-.portrait-crop {
+/* Box that frames the image. Mobile/tablet: crop to the bust. */
+.portrait-box {
+  position: relative;
   overflow: hidden;
-  /* 1145 x 800: the cutout's width, cropped just above where the suit meets
-     the photo's side edges. Reserves the space, so nothing shifts. */
   aspect-ratio: 1145 / 800;
+}
+@media (min-width: 1024px) {
+  .portrait-box {
+    position: absolute;
+    inset-inline: 0;
+    /* Same offset as the headline below the name: name line (15px x 1.5)
+       plus the headline's 20px top margin. */
+    top: calc(0.9375rem * 1.5 + 1.25rem);
+    bottom: 0;
+    aspect-ratio: auto;
+    /* Bottom fade, intersected with a narrow side fade: the suit meets the
+       photo's left/right edges low down, and the side fade dissolves those
+       straight edges into the light falloff. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 var(--fade-from), transparent 100%),
+      linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, #000 var(--fade-from), transparent 100%),
+      linear-gradient(to right, transparent 0, #000 12%, #000 88%, transparent 100%);
+    mask-composite: intersect;
+    --fade-from: 80%;
+  }
+  /* On paper, straight fades leave a boxy grey smudge where the dark suit
+     dissolves, so light mode uses one curved fade that follows the
+     shoulders instead: an ellipse centred on the head. */
+  [data-theme="light"] .portrait-box {
+    -webkit-mask-image: radial-gradient(
+      ellipse 60% 70% at 50% 30%,
+      #000 70%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 60% 70% at 50% 30%,
+      #000 70%,
+      transparent 100%
+    );
+  }
+}
+
+/* Light falling on the subject (see note above). */
+.portrait-rim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(50 120 255 / 0.75) 0%,
+    rgb(50 120 255 / 0.28) 26%,
+    transparent 42%,
+    transparent 58%,
+    rgb(240 55 45 / 0.24) 74%,
+    rgb(240 55 45 / 0.68) 100%
+  );
+  mix-blend-mode: screen;
+  /* Two masks, intersected:
+     1. the cutout itself (same file, cover sizing, top anchoring as the
+        image), so the light only lands on him;
+     2. a vertical falloff, so the light hits head and shoulders and fades
+        out down the torso, like a real back light. It also keeps the lower
+        suit dark where it meets the photo's side edges. */
+  -webkit-mask-image: url("/portrait.webp"),
+    linear-gradient(to bottom, #000 0, #000 52%, transparent 78%);
+  mask-image: url("/portrait.webp"),
+    linear-gradient(to bottom, #000 0, #000 52%, transparent 78%);
+  -webkit-mask-size: cover, 100% 100%;
+  mask-size: cover, 100% 100%;
+  -webkit-mask-position: top center, 0 0;
+  mask-position: top center, 0 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 
 /* Entrance: a short fade and 12px rise, staggered with --d. Only opacity and
@@ -291,6 +380,7 @@
 
   /* Round icon button (theme toggle, mobile menu). */
   .icon-btn {
+    -webkit-tap-highlight-color: transparent;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -298,8 +388,32 @@
     color: var(--foreground);
     transition: background-color 200ms ease;
   }
-  .icon-btn:hover {
+  .icon-btn:hover,
+  .icon-btn:active,
+  .icon-btn:focus-visible {
     background: var(--surface-elevated);
+  }
+  /* Pressed: a slightly deeper step, so a tap visibly registers. */
+  .icon-btn:active {
+    background: var(--border-strong);
+  }
+
+  /* Navbar items (wordmark, links, mobile menu rows): the same tonal
+     highlight on hover, keyboard focus and tap. No colour accent. */
+  .nav-item {
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+  }
+  .nav-item:hover,
+  .nav-item:focus-visible {
+    background: var(--surface-elevated);
+    color: var(--foreground);
+  }
+  .nav-item:active {
+    background: var(--border-strong);
+    color: var(--foreground);
   }
 
   /* Shared container: every section and the navbar sit on this grid. */

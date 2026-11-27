@@ -108,6 +108,14 @@ export function Navbar() {
     return () => query.removeEventListener("change", onChange);
   }, []);
 
+  // iOS Safari only shows :active (tap) styles when the page has a touch
+  // listener, so register an empty passive one.
+  useEffect(() => {
+    const noop = () => {};
+    document.addEventListener("touchstart", noop, { passive: true });
+    return () => document.removeEventListener("touchstart", noop);
+  }, []);
+
   const close = () => setOpen(false);
 
   return (
@@ -121,7 +129,7 @@ export function Navbar() {
           href="#main"
           aria-label="Chimzy, back to top"
           onClick={close}
-          className="rounded-full font-display text-[1.0625rem] font-bold tracking-[0.08em] text-fg"
+          className="nav-item -ml-2.5 flex h-10 items-center rounded-full px-2.5 font-display text-[1.0625rem] font-bold tracking-[0.08em] text-fg"
         >
           CHIMZY
         </a>
@@ -136,7 +144,7 @@ export function Navbar() {
                   <a
                     href={`#${link.id}`}
                     aria-current={isActive ? "location" : undefined}
-                    className={`relative flex h-10 items-center rounded-full px-3.5 text-sm transition-colors duration-200 ${
+                    className={`nav-item relative flex h-10 items-center rounded-full px-3.5 text-sm ${
                       isActive ? "text-fg" : "text-muted hover:text-fg"
                     }`}
                   >
@@ -199,7 +207,7 @@ export function Navbar() {
                   href={`#${link.id}`}
                   onClick={close}
                   aria-current={active === link.id ? "location" : undefined}
-                  className="flex h-14 items-center justify-between rounded-2xl px-4 font-display text-2xl font-semibold tracking-tight text-fg"
+                  className="nav-item flex h-14 items-center justify-between rounded-2xl px-4 font-display text-2xl font-semibold tracking-tight text-fg"
                 >
                   {link.label}
                   <span className="label" aria-hidden="true">

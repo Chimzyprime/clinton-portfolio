@@ -38,7 +38,7 @@ const AUTOPLAY_MS = 2400;
 function Mock({ b }: { b: Build }) {
   return (
     <div
-      className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 shadow-2xl"
+      className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 shadow-xl"
       style={{ background: b.bg, color: b.ink }}
       aria-hidden="true"
     >
@@ -73,8 +73,9 @@ function Mock({ b }: { b: Build }) {
         <span
           className="absolute right-[6%] top-[18%] h-[52%] w-[34%] rounded-[40%_60%_55%_45%/50%_45%_55%_50%]"
           style={{
-            background: `radial-gradient(circle at 30% 30%, ${b.accent}, transparent 70%), ${b.accent}33`,
-            filter: "blur(0.5px)",
+            background: `radial-gradient(circle at 30% 30%, ${b.accent}99, transparent 72%), ${b.accent}1f`,
+            filter: "blur(6px)",
+            opacity: 0.85,
           }}
         />
         <div className="absolute inset-x-[6%] bottom-[6%] grid grid-cols-3 gap-2">

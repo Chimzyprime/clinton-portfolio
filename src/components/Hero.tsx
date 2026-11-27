@@ -22,6 +22,10 @@ const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
  * (aspect-ratio on small screens, the text column's height on desktop); the headline size is a CSS clamp() resolved before
  * paint; the entrance animation only touches opacity and transform.
  */
+/* The headline, split into its three lines for the reveal. Must read the
+   same as site.hero.headline. */
+const HEADLINE_LINES = ["I build brands", "and digital", "experiences."];
+
 export function Hero() {
   return (
     <section aria-labelledby="hero-heading" className="relative overflow-hidden">
@@ -43,10 +47,16 @@ export function Hero() {
               experiences." without forcing breaks into the markup. */}
           <h1
             id="hero-heading"
-            className="reveal mt-5 max-w-[7.4em] text-[clamp(2.5rem,5.6vw,5.5rem)] font-bold leading-[1.02] tracking-[-0.035em]"
-            style={delay(80)}
+            className="mt-5 max-w-[7.4em] text-[clamp(2.5rem,5.6vw,5.5rem)] font-bold leading-[1.02] tracking-[-0.035em]"
           >
-            {site.hero.headline}
+            {HEADLINE_LINES.map((line, i) => (
+              <span key={line} className="line-mask">
+                <span className="line-inner" style={{ ["--i" as string]: i }}>
+                  {line}
+                  {i < HEADLINE_LINES.length - 1 ? " " : ""}
+                </span>
+              </span>
+            ))}
           </h1>
 
           {/* C. Professional title */}

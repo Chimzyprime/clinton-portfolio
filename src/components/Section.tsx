@@ -23,7 +23,7 @@ export function Section({ id, index, title, children }: SectionProps) {
       // Names the region for screen-reader landmark navigation.
       aria-labelledby={headingId}
       // Offsets anchor jumps so the floating navbar never covers the heading.
-      className="scroll-mt-24 lg:scroll-mt-32 border-t border-line"
+      className="scroll-mt-24 md:scroll-mt-28 border-t border-line"
     >
       <div className="page-x grid gap-8 py-16 lg:grid-cols-12 lg:gap-12 lg:py-24">
         <div className="lg:col-span-3">

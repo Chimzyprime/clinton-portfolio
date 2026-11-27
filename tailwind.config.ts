@@ -11,6 +11,8 @@ const config: Config = {
         fg: "var(--fg)",
         muted: "var(--muted)",
         line: "var(--line)",
+        "line-strong": "var(--line-strong)",
+        surface: "var(--surface)",
         accent: "var(--accent)",
       },
       fontFamily: {

@@ -1,108 +1,94 @@
 import Image from "next/image";
-import { portrait, site, work } from "@/data/site";
+import { ArrowUpRight } from "lucide-react";
+import type { CSSProperties } from "react";
+import { portrait, site } from "@/data/site";
+
+/** Stagger helper for the entrance animation (see .reveal in globals.css). */
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 /**
- * Split-screen editorial hero, always dark (data-theme="dark" scopes the dark
- * colour tokens to this section only) so the cinematic lighting reads.
- *  Left:  label, name as the only h1, intro, two links.
- *  Right: transparent portrait cutout emerging from the bottom edge, lit from
- *         behind by CSS gradients (blue left, red right).
- *  Below: slow strip of selected project names.
+ * Two-column editorial hero (about 1.1fr / 0.9fr on desktop).
  *
- * Layout-shift notes: the portrait box reserves its space from the image's
- * real width and height; the strip has a fixed height and only animates
- * transform. Nothing in this section moves after first paint.
+ *  Left, one shared left edge, in this order:
+ *    name → headline (h1) → professional title → description → CTAs
+ *  Right: the transparent portrait cutout, softly lit from behind.
+ *
+ * Below 1024px the columns stack (text first, then portrait), because the
+ * headline needs the width. The hero follows the site theme.
+ *
+ * Layout-shift notes: the portrait reserves its box from the image's real
+ * width and height; the headline size is a CSS clamp() resolved before
+ * paint; the entrance animation only touches opacity and transform.
  */
 export function Hero() {
-  const projects = work.map((item) => item.title);
-
   return (
-    <section
-      aria-labelledby="hero-heading"
-      data-theme="dark"
-      className="relative overflow-hidden bg-bg text-fg"
-    >
-      {/* Very faint overall falloff so the lighting has a room to sit in. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_75%_55%,rgb(40_50_80/0.25),transparent_70%)]"
-      />
-
-      <div className="page-x relative grid gap-4 pt-28 md:pt-32 lg:min-h-[calc(100svh-3.5rem)] lg:grid-cols-12 lg:gap-12 lg:pt-[7.5rem]">
-        {/* LEFT: text block, with generous negative space */}
-        <div className="pb-4 lg:col-span-6 lg:self-center lg:py-24">
-          <p className="label flex items-center gap-3">
-            {/* Single accent mark: the only resting use of the gold. */}
-            <span aria-hidden="true" className="inline-block h-2 w-2 bg-accent" />
-            Portfolio · 2026
-          </p>
-
-          {/* The only h1. clamp() is resolved by CSS before paint, so no jump. */}
-          <h1
-            id="hero-heading"
-            className="mt-6 max-w-[14ch] text-balance text-[clamp(2.75rem,6.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.04em]"
+    <section aria-labelledby="hero-heading" className="relative overflow-hidden">
+      <div className="page-x grid items-center gap-14 pb-16 pt-28 md:pt-36 lg:min-h-[100svh] lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:pb-20 lg:pt-[8.5rem] xl:gap-20">
+        {/* LEFT: text column */}
+        <div>
+          {/* A. Name: visible first, deliberately quieter than the headline. */}
+          <p
+            className="reveal text-[0.9375rem] font-medium tracking-[0.02em] text-fg"
+            style={delay(0)}
           >
             {site.name}
-          </h1>
-
-          <p className="mt-8 max-w-[34ch] text-lg leading-relaxed text-muted sm:text-xl">
-            {site.intro}
           </p>
 
-          <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4 lg:mt-20">
-            <a href="#work" className="link text-lg font-medium">
-              View work
+          {/* B. Headline: the strongest element on the page. max-w in em
+              shapes it into three lines: "I build brands / and digital /
+              experiences." without forcing breaks into the markup. */}
+          <h1
+            id="hero-heading"
+            className="reveal mt-5 max-w-[7.4em] text-[clamp(2.5rem,5.6vw,5.5rem)] font-bold leading-[1.02] tracking-[-0.035em]"
+            style={delay(80)}
+          >
+            {site.hero.headline}
+          </h1>
+
+          {/* C. Professional title */}
+          <p
+            className="reveal mt-7 font-display text-[clamp(1.125rem,1.5vw,1.375rem)] font-semibold tracking-[-0.01em] text-fg"
+            style={delay(160)}
+          >
+            {site.hero.title}
+          </p>
+
+          {/* D. Supporting description */}
+          <p
+            className="reveal mt-4 max-w-[30rem] text-[0.9375rem] leading-[1.65] text-muted md:text-[1.0625rem]"
+            style={delay(240)}
+          >
+            {site.hero.description}
+          </p>
+
+          {/* E. CTAs: same height, same baseline, primary first. */}
+          <div className="reveal mt-10 flex flex-wrap gap-3 sm:gap-4" style={delay(320)}>
+            <a href="#contact" className="btn btn-primary h-12 px-5 sm:px-6">
+              Let&rsquo;s Talk
+              <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
             </a>
-            <a href="#contact" className="link text-lg font-medium">
-              Contact
+            <a href="#work" className="btn btn-secondary h-12 px-5 sm:px-6">
+              View my work
+              <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
             </a>
           </div>
         </div>
 
-        {/* RIGHT: portrait, anchored to the bottom so the figure rises out of it */}
-        <figure className="relative mx-auto w-full max-w-[26rem] self-end sm:max-w-[30rem] lg:col-span-6 lg:max-w-[38rem]">
+        {/* RIGHT: portrait */}
+        <figure className="reveal-portrait mx-auto w-full max-w-[24rem] sm:max-w-[28rem] lg:mx-0 lg:max-w-[36rem] lg:justify-self-end">
           <div className="portrait-light">
-            <div aria-hidden="true" className="portrait-core" />
             <Image
               src={portrait.src}
               alt={portrait.alt}
               width={portrait.width}
               height={portrait.height}
-              // Above the fold: fetch first.
+              // Above the fold on desktop: fetch first.
               priority
-              sizes="(min-width: 1024px) 38rem, (min-width: 640px) 30rem, 90vw"
+              sizes="(min-width: 1024px) 36rem, (min-width: 640px) 28rem, 90vw"
               className="portrait-img relative block h-auto w-full"
             />
           </div>
         </figure>
-      </div>
-
-      {/*
-        PROJECT STRIP. Decorative motion, so it is hidden from screen readers;
-        the same projects are a real list in the Work section below.
-      */}
-      <div
-        aria-hidden="true"
-        className="strip relative h-14 overflow-hidden border-y border-line bg-bg"
-      >
-        <div className="strip-track flex h-full w-max items-center">
-          {[0, 1].map((copy) => (
-            <ul
-              key={copy}
-              className={`flex shrink-0 items-center ${copy === 1 ? "strip-copy" : ""}`}
-            >
-              {projects.map((name) => (
-                <li
-                  key={name}
-                  className="label flex items-center whitespace-nowrap !text-fg"
-                >
-                  <span className="px-6">{name}</span>
-                  <span className="text-accent">/</span>
-                </li>
-              ))}
-            </ul>
-          ))}
-        </div>
       </div>
     </section>
   );

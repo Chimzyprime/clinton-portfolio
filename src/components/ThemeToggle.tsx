@@ -1,30 +1,38 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type Theme = "dark" | "light";
 
 /**
- * Switches between the dark (default) and warm light themes.
+ * Round sun/moon button that switches the whole site between dark (default)
+ * and light, and saves the choice in localStorage.
  *
- * Layout-shift note: the visible label ("Light" / "Dark") is swapped with CSS
- * keyed on <html data-theme>, not with React state, and the button has a fixed
- * width. The label is therefore correct on the very first paint and nothing
- * moves when React hydrates.
+ * Layout-shift note: which icon shows is decided by CSS keyed on
+ * <html data-theme> (see [data-show-in] in globals.css), not by React state,
+ * so the correct icon is there at first paint and nothing flips on hydration.
+ * The button has a fixed size.
  */
-export function ThemeToggle() {
-  // null until mounted, so server and first client render match exactly.
+export function ThemeToggle({ className = "" }: { className?: string }) {
+  // null until mounted, so the server and first client render match.
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    // Read what the pre-paint script already applied.
+    // Read what the pre-paint script in layout.tsx already applied.
     const current = document.documentElement.getAttribute("data-theme");
     setTheme(current === "light" ? "light" : "dark");
   }, []);
 
   function toggle() {
+    const root = document.documentElement;
     const next: Theme = theme === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
+
+    // Ease colours across the page for this one switch only.
+    root.classList.add("theme-transition");
+    root.setAttribute("data-theme", next);
+    window.setTimeout(() => root.classList.remove("theme-transition"), 300);
+
     try {
       localStorage.setItem("theme", next);
     } catch {
@@ -33,7 +41,8 @@ export function ThemeToggle() {
     setTheme(next);
   }
 
-  // Screen-reader name states the action, not the current state.
+  // The accessible name states the action. Before mount it assumes dark,
+  // which is also what the server renders.
   const label =
     theme === "light" ? "Switch to dark theme" : "Switch to light theme";
 
@@ -42,12 +51,13 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={label}
-      className="label inline-flex h-9 w-[5.25rem] items-center justify-center border border-fg !text-fg transition-colors hover:border-accent hover:!text-accent"
+      title={label}
+      className={`icon-btn h-10 w-10 ${className}`}
     >
-      {/* Shown while the theme is dark: offers "Light". */}
-      <span data-show-in="dark">Light</span>
-      {/* Shown while the theme is light: offers "Dark". */}
-      <span data-show-in="light">Dark</span>
+      {/* In dark mode, offer the sun (go light). */}
+      <Sun data-show-in="dark" aria-hidden="true" size={18} strokeWidth={1.75} />
+      {/* In light mode, offer the moon (go dark). */}
+      <Moon data-show-in="light" aria-hidden="true" size={18} strokeWidth={1.75} />
     </button>
   );
 }

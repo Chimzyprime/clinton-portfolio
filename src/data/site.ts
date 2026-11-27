@@ -52,6 +52,13 @@ export const site = {
   email: "chimzyprime@gmail.com",
   intro:
     "A multidisciplinary creative and technical builder working across brand identity, campaign design, frontend development and technical writing.",
+  /** Hero copy, as written in the creative brief. */
+  hero: {
+    headline: "I build brands and digital experiences.",
+    title: "Brand Designer × Full-Stack Developer",
+    description:
+      "I combine thoughtful brand design with technology to create distinctive identities and meaningful digital experiences.",
+  },
   socials: [
     { label: "X", handle: "@chimzyprime", href: "https://x.com/chimzyprime" },
     {

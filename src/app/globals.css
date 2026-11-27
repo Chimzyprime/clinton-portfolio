@@ -3,32 +3,48 @@
 @tailwind utilities;
 
 /*
-  THEME TOKENS
-  Dark (warm near-black) is the default, and the fallback if the theme
-  script never runs. Warm off-white editorial paper is the alternate theme. The accent is a
-  muted gold. Contrast ratios (text on --bg), measured with the WCAG formula:
-    light: fg 16.4:1 | muted 6.2:1 | accent 4.8:1
-    dark : fg 16.2:1 | muted 7.4:1 | accent 9.2:1
-  All text clears WCAG AA (4.5:1). --line is for decorative hairlines only
-  (about 1.3:1). Anything interactive uses --fg or --accent for its outline.
-*/
-[data-theme="light"] {
-  --bg: #f6f2ea;
-  --fg: #161512;
-  --muted: #5e594f;
-  --line: #ddd6c8;
-  --accent: #8a6418;
-  color-scheme: light;
-}
+  ============================================================================
+  DESIGN TOKENS
+  ============================================================================
+  Two independently tuned neutral themes. Dark is the default (and the
+  fallback if the theme script never runs).
 
+  --accent is deliberately neutral for now: the signature accent colour is
+  not decided yet. Everything that should one day carry the accent already
+  reads var(--accent), so introducing it later is a one-line change per theme.
+
+  Contrast (WCAG, measured):
+    dark : fg 16.3:1 | muted 7.2:1 on bg, 6.7:1 on surface
+    light: fg 15.7:1 | muted 6.0:1 on bg, 5.4:1 on surface
+  --line is for hairline dividers only. --line-strong outlines controls whose
+  label already identifies them.
+*/
 :root,
 [data-theme="dark"] {
-  --bg: #12110e;
-  --fg: #f2ede3;
-  --muted: #a8a193;
-  --line: #2e2b25;
-  --accent: #d4b06a;
+  --bg: #131312; /* deep charcoal, not pure black */
+  --surface: #1b1b19; /* slightly lighter charcoal: navbar, panels */
+  --surface-hover: #242422; /* tonal hover step */
+  --fg: #f2f0eb; /* soft white */
+  --muted: #a3a19b; /* secondary text */
+  --line: #2c2b28; /* subtle dividers */
+  --line-strong: #44423e; /* outlines on secondary controls */
+  --accent: var(--fg); /* placeholder until the accent is approved */
+  --on-fg: #131312; /* text on a solid --fg button */
   color-scheme: dark;
+}
+
+/* Light is its own palette (warm paper), not an inversion of dark. */
+[data-theme="light"] {
+  --bg: #f5f2ec; /* warm off-white */
+  --surface: #ebe7de; /* warm neutral, a step darker than paper */
+  --surface-hover: #e2ddd2;
+  --fg: #1a1917; /* deep charcoal */
+  --muted: #5f5c55;
+  --line: #dcd7cc;
+  --line-strong: #b9b3a6;
+  --accent: var(--fg);
+  --on-fg: #f5f2ec;
+  color-scheme: light;
 }
 
 @layer base {
@@ -49,7 +65,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Visible keyboard focus everywhere, in the accent colour. */
+  /* Visible keyboard focus everywhere. */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -63,7 +79,7 @@
   }
 
   ::selection {
-    background: var(--accent);
+    background: var(--fg);
     color: var(--bg);
   }
 
@@ -81,25 +97,66 @@
 }
 
 /*
-  Theme toggle labels: show only the label for the other theme. Done in CSS
-  (not React state) so the right word is on screen on first paint.
+  THEME SWITCH TRANSITION
+  ThemeToggle adds .theme-transition to <html> for ~300ms while swapping, so
+  colours ease across the whole page. It is removed straight after, so it
+  never slows ordinary hover states.
 */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 240ms ease,
+    color 240ms ease,
+    border-color 240ms ease,
+    fill 240ms ease,
+    stroke 240ms ease !important;
+}
+
+/* Theme toggle icon: show the icon for the theme you would switch TO. Done
+   in CSS so the right icon is on screen at first paint (no hydration flip). */
 [data-theme="dark"] [data-show-in="light"],
 [data-theme="light"] [data-show-in="dark"] {
   display: none;
 }
 
 /*
-  HERO LIGHTING
-  The hero is always dark, whatever the page theme, so the light reads. The
-  coloured light is drawn here with layered radial gradients BEHIND the
-  transparent portrait, never as a filter over the face:
-    ::before  blue key glow, behind the subject's left side
-    ::after   red glow, behind the right side
-    .portrait-core  a soft neutral pool that seats the figure in the scene
-  Each light is a radial gradient fading to transparent, plus a light blur,
-  so it blends into the background with no visible edge. Nothing animates.
+  ============================================================================
+  NAVBAR — centred floating pill
+  ============================================================================
+  Content-width pill on the theme's surface colour, lightly translucent with
+  a modest blur. Only colour changes on scroll; size and position never do.
 */
+.nav-pill {
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px -16px rgb(0 0 0 / 0.45);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease;
+}
+.nav-pill[data-scrolled="true"] {
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav-pill,
+  .nav-pill[data-scrolled="true"] {
+    background: var(--surface);
+  }
+}
+
+/*
+  ============================================================================
+  HERO
+  ============================================================================
+*/
+
+/* Portrait lighting: restrained, behind the subject only. The cutout already
+   carries the photo's own blue/red rim light; these two soft pools just let
+   it sit in the scene. Radial gradients fading to transparent, no hard edges. */
 .portrait-light {
   position: relative;
   isolation: isolate;
@@ -111,171 +168,166 @@
   z-index: -1;
   pointer-events: none;
   border-radius: 9999px;
-  filter: blur(40px);
+  filter: blur(36px);
 }
 .portrait-light::before {
-  /* Blue: larger and brighter, sits behind the left shoulder and head. */
-  left: -18%;
-  top: 4%;
-  width: 78%;
-  height: 82%;
-  background: radial-gradient(
-    closest-side,
-    rgb(30 110 255 / 0.55),
-    rgb(30 110 255 / 0.22) 55%,
-    transparent
-  );
+  left: -8%;
+  top: 14%;
+  width: 62%;
+  height: 66%;
+  background: radial-gradient(closest-side, rgb(40 110 245 / 0.26), transparent);
 }
 .portrait-light::after {
-  /* Red: smaller and quieter, behind the right shoulder. */
-  right: -16%;
-  top: 18%;
-  width: 62%;
-  height: 72%;
-  background: radial-gradient(
-    closest-side,
-    rgb(235 40 35 / 0.45),
-    rgb(235 40 35 / 0.16) 55%,
-    transparent
-  );
+  right: -8%;
+  top: 22%;
+  width: 52%;
+  height: 60%;
+  background: radial-gradient(closest-side, rgb(225 45 40 / 0.2), transparent);
 }
-.portrait-core {
-  position: absolute;
-  z-index: -1;
-  inset: 10% 18% 0 18%;
-  pointer-events: none;
-  background: radial-gradient(
-    closest-side,
-    rgb(70 80 110 / 0.35),
-    transparent
-  );
-  filter: blur(24px);
+/* On warm paper coloured light reads as a stain, so it is barely there. */
+[data-theme="light"] .portrait-light::before,
+[data-theme="light"] .portrait-light::after {
+  opacity: 0.22;
 }
+
 .portrait-img {
   /* Two masks, intersected: the sides fade so the shoulders melt into the
-     dark (no vertical image edge), and the bottom fades so the body rises
-     out of the background instead of ending on a hard line. */
+     background, and the bottom fades so the figure has no hard base line. */
   -webkit-mask-image: linear-gradient(
       to right,
       transparent 0,
-      #000 14%,
-      #000 86%,
+      #000 12%,
+      #000 88%,
       transparent 100%
     ),
-    linear-gradient(to bottom, #000 70%, transparent 100%);
+    linear-gradient(to bottom, #000 74%, transparent 100%);
   -webkit-mask-composite: source-in;
   mask-image: linear-gradient(
       to right,
       transparent 0,
-      #000 14%,
-      #000 86%,
+      #000 12%,
+      #000 88%,
       transparent 100%
     ),
-    linear-gradient(to bottom, #000 70%, transparent 100%);
+    linear-gradient(to bottom, #000 74%, transparent 100%);
   mask-composite: intersect;
-  /* Subtle rim light: two soft coloured shadows hugging the silhouette's
-     outer edge (they fall outside the figure, not across the face). */
-  filter: drop-shadow(-10px 0 22px rgb(30 110 255 / 0.28))
-    drop-shadow(10px 0 22px rgb(235 40 35 / 0.22));
 }
 
-/*
-  NAVBAR (floating glass pill)
-  Slightly lighter charcoal than the page, mostly opaque so text stays
-  readable over the lit hero and every section. Once the page scrolls the
-  background firms up a little; only colour animates, never size or position.
-*/
-.nav-pill {
-  background: rgb(30 29 26 / 0.62);
-  border: 1px solid rgb(255 255 255 / 0.09);
-  box-shadow:
-    0 1px 0 rgb(255 255 255 / 0.04) inset,
-    0 12px 32px -12px rgb(0 0 0 / 0.55);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  backdrop-filter: blur(16px) saturate(140%);
-  transition:
-    background-color 300ms ease,
-    border-color 300ms ease;
-}
-.nav-pill[data-scrolled="true"] {
-  background: rgb(30 29 26 / 0.84);
-  border-color: rgb(255 255 255 / 0.11);
-}
-/* Browsers without backdrop blur get a solid bar, so text is never lost. */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .nav-pill,
-  .nav-pill[data-scrolled="true"] {
-    background: rgb(30 29 26);
-  }
+/* Light theme: a dark suit fading over paper turns into a grey wash, so the
+   fades are much tighter: just enough to soften the image edges. */
+[data-theme="light"] .portrait-img {
+  -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom, #000 92%, transparent 100%);
+  mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 4%,
+      #000 96%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom, #000 92%, transparent 100%);
 }
 
-/* CTA: a quieter pill inside the pill, lifted by a hairline and a touch of
-   light. Hover warms the border to gold and nudges the arrow. */
-.nav-cta {
-  background: rgb(255 255 255 / 0.07);
-  border: 1px solid rgb(255 255 255 / 0.14);
-  transition:
-    background-color 200ms ease,
-    border-color 200ms ease;
-}
-.nav-cta:hover {
-  background: rgb(255 255 255 / 0.11);
-  border-color: var(--accent);
-}
-.nav-cta-arrow {
-  display: inline-block;
-  transition: transform 200ms ease;
-}
-.nav-cta:hover .nav-cta-arrow {
-  transform: translate(2px, -2px);
-}
-
-/* Focus ring sits just outside the rounded shape. */
-.nav-focus:focus-visible {
-  outline-offset: 2px;
-}
-
-/*
-  PROJECT STRIP (hero)
-  The track holds the list twice; moving it by -50% loops seamlessly. Only
-  transform is animated, so it runs on the compositor and never shifts layout.
-  It pauses on hover, and with reduced motion it becomes a static wrapped list.
-*/
-@keyframes strip-scroll {
+/* Entrance: a short fade and 12px rise, staggered with --d. Only opacity and
+   transform animate, so nothing shifts layout. Disabled by reduced motion
+   (the base rule above), in which case everything is simply visible. */
+@keyframes rise-in {
   from {
-    transform: translate3d(0, 0, 0);
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    opacity: 1;
+    transform: none;
   }
 }
-
-.strip-track {
-  animation: strip-scroll 40s linear infinite;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
-.strip:hover .strip-track {
-  animation-play-state: paused;
+.reveal {
+  animation: rise-in 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--d, 0ms);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .strip {
-    height: auto;
-    padding-block: 0.75rem;
-  }
-  .strip-track {
-    flex-wrap: wrap;
-    width: auto;
-  }
-  /* The duplicate copy only exists for the loop; hide it when static. */
-  .strip-copy {
-    display: none;
-  }
+.reveal-portrait {
+  animation: fade-in 900ms ease both;
+  animation-delay: 200ms;
 }
 
 @layer components {
-  /* Shared horizontal gutter so every section lines up on the same grid. */
+  /*
+    ============================================================================
+    BUTTONS (neutral until the accent is approved)
+    In the components layer, so utility classes such as `hidden` override them.
+    ============================================================================
+  */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+  .btn-primary {
+    background: var(--fg);
+    color: var(--on-fg);
+    border: 1px solid var(--fg);
+  }
+  .btn-primary:hover {
+    background: color-mix(in srgb, var(--fg) 86%, var(--bg));
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--line-strong);
+  }
+  .btn-secondary:hover {
+    background: var(--surface);
+    border-color: var(--fg);
+  }
+  /* The arrow nudges up and right on hover: small, directional, no bounce. */
+  .btn-arrow {
+    transition: transform 200ms ease;
+  }
+  .btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Round icon button (theme toggle, mobile menu). */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: var(--fg);
+    transition: background-color 200ms ease;
+  }
+  .icon-btn:hover {
+    background: var(--surface-hover);
+  }
+
+  /* Shared container: every section and the navbar sit on this grid. */
   .page-x {
-    @apply mx-auto w-full max-w-page px-5 sm:px-8 lg:px-12;
+    @apply mx-auto w-full max-w-page px-[22px] md:px-10 lg:px-16;
   }
 
   /* Small uppercase mono label used for indexes and metadata. */
@@ -283,7 +335,7 @@
     @apply font-mono text-xs uppercase tracking-[0.14em] text-muted;
   }
 
-  /* Underline that thickens and takes the accent on hover; no layout change. */
+  /* Underline link; hover strengthens the underline, no layout change. */
   .link {
     @apply underline decoration-line decoration-1 underline-offset-[6px] transition-colors;
   }

@@ -1,19 +1,20 @@
 "use client";
 
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
 /**
- * Floating, centred, pill-shaped navbar.
+ * Centred floating pill navbar, sized to its content.
  *
- *  Left:   CHIMZY® wordmark (back to top)
- *  Centre: Work, About, Services, Contact, with an active-section indicator
- *  Right:  "Let's Talk" call to action (to #contact)
- *  Mobile: wordmark + menu button, opening a glass panel with the same links
+ *  [ CHIMZY ]   [ Work  About  Services  Contact ]   [ theme | LET'S TALK ]
+ *
+ * Mobile: CHIMZY, theme toggle and a menu button; the menu opens a panel with
+ * the same destinations and the CTA, and closes after a choice or on Escape.
  *
  * Layout-shift notes: the bar is position:fixed, so it takes no space in the
- * page flow and nothing below it moves. Its height never changes; scrolling
- * only changes background opacity. The mobile panel is also fixed, so opening
- * it pushes nothing down.
+ * page flow. Its size never changes; scrolling only firms up the background.
+ * The mobile panel is also fixed, so opening it pushes nothing down.
  */
 
 // Order requested in the brief. Each id matches a <Section id="..."> on the page.
@@ -110,31 +111,24 @@ export function Navbar() {
   const close = () => setOpen(false);
 
   return (
-    // data-theme="dark": the bar always uses the dark tokens, on any theme.
-    <header
-      data-theme="dark"
-      className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 md:top-5 lg:top-6"
-    >
+    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 md:top-6">
       <div
         data-scrolled={scrolled || open ? "true" : "false"}
-        className="nav-pill pointer-events-auto mx-auto flex h-14 max-w-[1050px] items-center justify-between rounded-full pl-5 pr-2 md:h-16 md:pl-7 md:pr-2.5 lg:h-[76px] lg:pl-8 lg:pr-3"
+        className="nav-pill pointer-events-auto mx-auto flex h-[60px] w-full items-center justify-between rounded-full pl-5 pr-2 md:w-fit md:justify-start md:gap-8 md:pl-7 md:pr-2 lg:gap-12"
       >
-        {/* LEFT: wordmark */}
+        {/* GROUP 1: brand */}
         <a
           href="#main"
           aria-label="Chimzy, back to top"
           onClick={close}
-          className="nav-focus rounded-full font-display text-[1.0625rem] font-bold tracking-[0.06em] text-fg lg:text-lg"
+          className="rounded-full font-display text-[1.0625rem] font-bold tracking-[0.08em] text-fg"
         >
           CHIMZY
-          <sup className="ml-0.5 align-super text-[0.55em] font-semibold text-accent">
-            ®
-          </sup>
         </a>
 
-        {/* CENTRE: links (tablet and up) */}
+        {/* GROUP 2: links (tablet and up) */}
         <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1 lg:gap-3">
+          <ul className="flex items-center gap-1 lg:gap-2">
             {links.map((link) => {
               const isActive = active === link.id;
               return (
@@ -142,15 +136,15 @@ export function Navbar() {
                   <a
                     href={`#${link.id}`}
                     aria-current={isActive ? "location" : undefined}
-                    className={`nav-link nav-focus relative flex h-11 items-center rounded-full px-4 text-[0.9375rem] transition-colors duration-200 ${
+                    className={`relative flex h-10 items-center rounded-full px-3.5 text-sm transition-colors duration-200 ${
                       isActive ? "text-fg" : "text-muted hover:text-fg"
                     }`}
                   >
                     {link.label}
-                    {/* Active indicator: a small gold dot under the label. */}
+                    {/* Active indicator: a small dot under the label. */}
                     <span
                       aria-hidden="true"
-                      className={`absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent transition-opacity duration-300 ${
+                      className={`absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-accent transition-opacity duration-300 ${
                         isActive ? "opacity-100" : "opacity-0"
                       }`}
                     />
@@ -161,41 +155,32 @@ export function Navbar() {
           </ul>
         </nav>
 
-        {/* RIGHT: CTA (tablet and up) */}
-        <a
-          href="#contact"
-          className="nav-cta nav-focus hidden h-11 items-center gap-2 rounded-full px-5 text-[0.9375rem] font-medium text-fg md:inline-flex lg:h-12 lg:px-6"
-        >
-          Let&rsquo;s Talk
-          <span aria-hidden="true" className="nav-cta-arrow text-accent">
-            ↗
-          </span>
-        </a>
-
-        {/* MOBILE: menu button */}
-        <button
-          ref={menuButton}
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
-          onClick={() => setOpen((value) => !value)}
-          className="nav-focus flex h-11 w-11 items-center justify-center rounded-full text-fg md:hidden"
-        >
-          {/* Two lines that turn into an X. Pure CSS, no icon library. */}
-          <span aria-hidden="true" className="relative block h-3 w-5">
-            <span
-              className={`absolute left-0 h-px w-5 bg-current transition-transform duration-300 ${
-                open ? "top-1.5 rotate-45" : "top-0"
-              }`}
-            />
-            <span
-              className={`absolute left-0 h-px w-5 bg-current transition-transform duration-300 ${
-                open ? "top-1.5 -rotate-45" : "top-3"
-              }`}
-            />
-          </span>
-        </button>
+        {/* GROUP 3: actions */}
+        <div className="flex items-center gap-1 md:gap-2">
+          <ThemeToggle />
+          <a
+            href="#contact"
+            className="btn btn-primary hidden h-11 px-5 md:inline-flex"
+          >
+            Let&rsquo;s Talk
+            <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
+          </a>
+          <button
+            ref={menuButton}
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((value) => !value)}
+            className="icon-btn h-11 w-11 md:hidden"
+          >
+            {open ? (
+              <X aria-hidden="true" size={20} strokeWidth={1.75} />
+            ) : (
+              <Menu aria-hidden="true" size={20} strokeWidth={1.75} />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* MOBILE PANEL. `hidden` removes it from tab order and screen readers
@@ -203,8 +188,8 @@ export function Navbar() {
       <div
         id="mobile-menu"
         hidden={!open}
-        className="nav-pill nav-panel pointer-events-auto mx-auto mt-2 max-w-[1050px] rounded-[1.75rem] p-3 md:hidden"
         data-scrolled="true"
+        className="nav-pill pointer-events-auto mx-auto mt-2 rounded-[1.75rem] p-3 md:hidden"
       >
         <nav aria-label="Mobile">
           <ul>
@@ -214,7 +199,7 @@ export function Navbar() {
                   href={`#${link.id}`}
                   onClick={close}
                   aria-current={active === link.id ? "location" : undefined}
-                  className="nav-focus flex h-14 items-center justify-between rounded-2xl px-4 font-display text-2xl font-semibold tracking-tight text-fg"
+                  className="flex h-14 items-center justify-between rounded-2xl px-4 font-display text-2xl font-semibold tracking-tight text-fg"
                 >
                   {link.label}
                   <span className="label" aria-hidden="true">
@@ -225,15 +210,9 @@ export function Navbar() {
             ))}
           </ul>
         </nav>
-        <a
-          href="#contact"
-          onClick={close}
-          className="nav-cta nav-focus mt-3 flex h-12 items-center justify-center gap-2 rounded-full text-base font-medium text-fg"
-        >
+        <a href="#contact" onClick={close} className="btn btn-primary mt-3 flex h-12 w-full">
           Let&rsquo;s Talk
-          <span aria-hidden="true" className="text-accent">
-            ↗
-          </span>
+          <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
         </a>
       </div>
     </header>

@@ -489,11 +489,14 @@
 }
 .wb-card[data-hidden="true"] { opacity: 0; pointer-events: none; }
 .wb-hit { display: block; width: 100%; height: 100%; border-radius: 0.75rem; cursor: pointer; }
-.wb-card[data-active="true"] .wb-hit { cursor: default; }
+.wb-card[data-active="true"] .wb-hit {
+  cursor: default;
+  box-shadow: 0 0 0 1px var(--highlight), 0 24px 60px -20px color-mix(in srgb, var(--highlight) 55%, transparent);
+}
 @media (hover: hover) {
   .wb-card[data-active="true"] { transition-property: transform, opacity; }
   .webbuilds:hover .wb-card[data-active="true"] {
-    transform: translateY(-6px) scale(1.015);
+    transform: translateY(-18px) scale(1.04);
   }
 }
 @media (max-width: 767px) {

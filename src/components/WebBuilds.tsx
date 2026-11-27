@@ -137,9 +137,8 @@ export function WebBuilds() {
       className="scroll-mt-24 border-t border-line md:scroll-mt-28"
     >
       <div className="page-x pt-16 lg:pt-24">
-        <p className="label">Web builds</p>
-        <h2 id="web-builds-heading" className="mt-3 text-2xl font-semibold tracking-tight">
-          Sites I code
+        <h2 id="web-builds-heading" className="text-2xl font-semibold tracking-tight">
+          Web <span className="text-highlight">builds</span>
         </h2>
       </div>
 
@@ -193,7 +192,7 @@ export function WebBuilds() {
 
         <div className="page-x mt-8 flex items-center justify-between gap-4">
           <p className="label">
-            <span className="text-fg">{String(active + 1).padStart(2, "0")}</span> /{" "}
+            <span className="text-highlight">{String(active + 1).padStart(2, "0")}</span> /{" "}
             {String(n).padStart(2, "0")} · Placeholder, real builds coming
           </p>
           <div className="flex items-center gap-2">

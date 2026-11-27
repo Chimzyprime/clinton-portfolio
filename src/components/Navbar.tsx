@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -125,14 +126,14 @@ export function Navbar() {
         className="nav-pill pointer-events-auto mx-auto flex h-[60px] w-full items-center justify-between rounded-full pl-5 pr-2 md:w-fit md:justify-start md:gap-8 md:pl-7 md:pr-2 lg:gap-12"
       >
         {/* GROUP 1: brand */}
-        <a
-          href="#main"
+        <Link
+          href="/#main"
           aria-label="Chimzy, back to top"
           onClick={close}
           className="nav-item -ml-2.5 flex h-10 items-center rounded-full px-2.5 font-display text-[1.0625rem] font-bold tracking-[0.08em] text-fg"
         >
           CHIMZY
-        </a>
+        </Link>
 
         {/* GROUP 2: links (tablet and up) */}
         <nav aria-label="Primary" className="hidden md:block">
@@ -142,7 +143,7 @@ export function Navbar() {
               return (
                 <li key={link.id}>
                   <a
-                    href={`#${link.id}`}
+                    href={`/#${link.id}`}
                     aria-current={isActive ? "location" : undefined}
                     className={`nav-item relative flex h-10 items-center rounded-full px-3.5 text-sm ${
                       isActive ? "text-fg" : "text-muted hover:text-fg"
@@ -166,13 +167,13 @@ export function Navbar() {
         {/* GROUP 3: actions */}
         <div className="flex items-center gap-1 md:gap-2">
           <ThemeToggle />
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="btn btn-primary hidden h-11 px-5 md:inline-flex"
           >
             Let&rsquo;s Talk
             <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
-          </a>
+          </Link>
           <button
             ref={menuButton}
             type="button"
@@ -204,7 +205,7 @@ export function Navbar() {
             {links.map((link, index) => (
               <li key={link.id} className={index > 0 ? "border-t border-line" : ""}>
                 <a
-                  href={`#${link.id}`}
+                  href={`/#${link.id}`}
                   onClick={close}
                   aria-current={active === link.id ? "location" : undefined}
                   className="nav-item flex h-14 items-center justify-between rounded-2xl px-4 font-display text-2xl font-semibold tracking-tight text-fg"
@@ -218,10 +219,10 @@ export function Navbar() {
             ))}
           </ul>
         </nav>
-        <a href="#contact" onClick={close} className="btn btn-primary mt-3 flex h-12 w-full">
+        <Link href="/#contact" onClick={close} className="btn btn-primary mt-3 flex h-12 w-full">
           Let&rsquo;s Talk
           <ArrowUpRight aria-hidden="true" size={15} strokeWidth={2} className="btn-arrow" />
-        </a>
+        </Link>
       </div>
     </header>
   );

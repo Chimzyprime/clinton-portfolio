@@ -246,3 +246,51 @@ export const webBuilds: WebBuild[] = [
   { title: "Your fashion label", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#1a1917", bg: "#efe9dd", ink: "#1a1917", url: "yourlabel.com" } },
   { title: "Your event landing page", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#f59e0b", bg: "#1a1410", ink: "#fbf1e0", url: "yourevent.com" } },
 ];
+
+/* ------------------------------------------------------------------------ *
+ * Design work (components/DesignWork.tsx, /work/[slug], /designs)
+ * ------------------------------------------------------------------------ */
+
+/** A full identity project. Opens its own case-study page at /work/<slug>. */
+export interface BrandSystem {
+  slug: string;
+  title: string;
+  year?: string;
+  summary: string;
+  /** Hero image for the card and case study. Placeholder art shows until set. */
+  image?: WorkImage;
+}
+
+/** Real projects from `work` above; copy is reused, nothing is invented. */
+export const brandSystems: BrandSystem[] = [
+  { slug: "kaidivox", title: "KAIDIVOX Technologies", year: "2026", summary: "Logo system and brand pack for a technology company, from monogram exploration to a full identity kit." },
+  { slug: "talorify", title: "Talorify", year: "2026", summary: "Logo and two-colour identity for a Chrome extension that helps job seekers get past ATS filters." },
+  { slug: "metakeyswap", title: "MetaKeySwap", year: "2025", summary: "Official project logo and launch marketing materials." },
+  { slug: "zeroxking", title: "ZeroXKing", year: "2025", summary: "Official project logo and launch marketing materials." },
+];
+
+export const designCategories = ["Social Media", "Web3", "Pitch Decks", "Thumbnails", "Events"] as const;
+export type DesignCategory = (typeof designCategories)[number];
+
+/**
+ * Single pieces (flyers, banners, posts, deck visuals). They feed the moving
+ * strip on the home page and the filterable gallery at /designs.
+ * Entries without `image` show placeholder art; add an image to replace it
+ * (width/height required so nothing shifts while it loads).
+ */
+export interface DesignPiece {
+  title: string;
+  category: DesignCategory;
+  image?: WorkImage;
+}
+
+export const designs: DesignPiece[] = [
+  { title: "Lucky Sheep banner", category: "Web3" },
+  { title: "APEX Foundation banner", category: "Web3" },
+  { title: "FOMO Life pitch-deck visuals", category: "Pitch Decks" },
+  { title: "Abia Fashion Week flyer", category: "Events" },
+  { title: "Abia Web3 Network LinkedIn graphics", category: "Social Media" },
+  { title: "Lucky Sheep profile picture", category: "Web3" },
+  { title: "FOMO Life campaign graphics", category: "Social Media" },
+  { title: "Community meetup flyer", category: "Events" },
+];

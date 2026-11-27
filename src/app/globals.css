@@ -507,3 +507,36 @@
   .webbuilds { --cw: 78vw; --step: calc(var(--cw) * 1.05); --rot: 0deg; }
   .wb-card { transform: translateX(calc(var(--o) * var(--step))) scale(calc(1 - var(--a) * 0.08)); }
 }
+
+/* ---- Design work (DesignWork.tsx, /work/[slug], /designs) ---- */
+.brand-card { transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 300ms ease, background-color 300ms ease; }
+.brand-card:hover, .brand-card:focus-visible { transform: translateY(-4px); border-color: color-mix(in srgb, var(--highlight) 45%, var(--border)); background-color: var(--surface-elevated); }
+
+/* Slow, seamless strip. Pauses on hover/focus; static + scrollable when motion is reduced. */
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; gap: 1rem; width: max-content; padding-inline: 1rem; animation: marquee 70s linear infinite; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+.marquee-item { width: 220px; flex: none; }
+@media (min-width: 768px) { .marquee-item { width: 260px; } }
+.marquee-tile { position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 0.75rem; border: 1px solid var(--border); transition: transform 350ms cubic-bezier(0.2, 0.7, 0.2, 1), border-color 300ms ease; }
+.marquee-tile:hover, .marquee-tile:focus-visible { transform: translateY(-4px); border-color: color-mix(in srgb, var(--highlight) 45%, var(--border)); }
+@keyframes marquee { to { transform: translateX(calc(-50% - 0.5rem)); } }
+@media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .marquee-track { animation: none; } }
+
+.filter-chip { height: 2.25rem; padding-inline: 1rem; border-radius: 9999px; border: 1px solid var(--border-strong); font-size: 0.8125rem; color: var(--text-secondary); transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease; }
+.filter-chip:hover { color: var(--foreground); border-color: var(--foreground); }
+.filter-chip[aria-pressed="true"] { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+
+.design-dialog { margin: auto; width: min(92vw, 560px); padding: 0.75rem; border-radius: 1rem; border: 1px solid var(--border-strong); background: var(--surface); color: var(--foreground); }
+.design-dialog::backdrop { background: rgb(0 0 0 / 0.7); backdrop-filter: blur(4px); }
+
+/* Bento case-study grid */
+.bento { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(140px, auto); }
+.bento-tile { display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; min-height: 140px; padding: 1.25rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--surface); }
+.bento-logo { grid-column: span 2; aspect-ratio: 16 / 10; min-height: 0; }
+.bento-wide { grid-column: span 2; }
+@media (min-width: 1024px) {
+  .bento { grid-template-columns: repeat(4, 1fr); gap: 1rem; grid-auto-rows: 180px; }
+  .bento-logo { grid-row: span 2; aspect-ratio: auto; }
+  .bento-tile { min-height: 0; }
+}

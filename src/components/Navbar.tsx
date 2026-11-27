@@ -20,7 +20,7 @@ import { ThemeToggle } from "./ThemeToggle";
 
 // Order requested in the brief. Each id matches a <Section id="..."> on the page.
 const links = [
-  { id: "work", label: "Work" },
+  { id: "design-work", label: "Work" },
   { id: "about", label: "About" },
   { id: "services", label: "Services" },
   { id: "contact", label: "Contact" },

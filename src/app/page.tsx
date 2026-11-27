@@ -1,7 +1,6 @@
 import { Hero } from "@/components/Hero";
 import { WebBuilds } from "@/components/WebBuilds";
 import { DesignWork } from "@/components/DesignWork";
-import { Work } from "@/components/Work";
 import { Services } from "@/components/Services";
 import { Writing } from "@/components/Writing";
 import { Toolkit } from "@/components/Toolkit";
@@ -16,7 +15,6 @@ export default function Home() {
       <Hero />
       <WebBuilds />
       <DesignWork />
-      <Work />
       <Services />
       <Writing />
       <Toolkit />

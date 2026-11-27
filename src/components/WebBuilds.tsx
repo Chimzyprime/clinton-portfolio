@@ -40,7 +40,9 @@ function Frame({ b }: { b: WebBuild }) {
 }
 
 function Mock({ b }: { b: WebBuild }) {
-  const m = b.mock ?? { accent: "#e2574c", bg: "#141413", ink: "#f2f0eb", url: "yoursite.com" };
+  // No invented domain for a real project with no mock set: show neutral
+  // placeholder art and the project name instead of a made-up URL.
+  const m = b.mock ?? { accent: "#8c8a84", bg: "#1b1b19", ink: "#f2f0eb", url: null };
   return (
     <div
       className="flex h-full w-full flex-col overflow-hidden rounded-xl border border-white/10 shadow-xl"
@@ -52,9 +54,11 @@ function Mock({ b }: { b: WebBuild }) {
         <span className="h-2 w-2 rounded-full bg-white/25" />
         <span className="h-2 w-2 rounded-full bg-white/25" />
         <span className="h-2 w-2 rounded-full bg-white/25" />
-        <span className="mx-auto rounded-full bg-white/10 px-3 py-0.5 font-mono text-[9px] opacity-70">
-          {m.url}
-        </span>
+        {m.url && (
+          <span className="mx-auto rounded-full bg-white/10 px-3 py-0.5 font-mono text-[9px] opacity-70">
+            {m.url}
+          </span>
+        )}
       </div>
       {/* Page */}
       <div className="relative flex-1 p-[6%]">
@@ -171,6 +175,7 @@ export function WebBuilds() {
             if (o > n / 2) o -= n;
             if (o < -n / 2) o += n;
             const isActive = o === 0;
+            const host = b.mock?.url ?? b.href?.replace(/^https?:\/\//, "").replace(/\/$/, "");
             return (
               <div
                 key={b.title}
@@ -188,7 +193,7 @@ export function WebBuilds() {
                   className="wb-hit"
                   tabIndex={isActive ? 0 : -1}
                   onClick={() => setActive(i)}
-                  aria-label={`${isActive ? "Current: " : "Show "}${b.title}, ${b.mock?.url ?? b.href?.replace(/^https?:\/\//, "").replace(/\/$/, "") ?? ""}`}
+                  aria-label={`${isActive ? "Current: " : "Show "}${b.title}${host ? `, ${host}` : ""}`}
                 >
                   <Frame b={b} />
                 </button>

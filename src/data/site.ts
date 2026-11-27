@@ -11,25 +11,11 @@
  *    the browser can reserve the space and nothing shifts while it loads.
  */
 
-export type DisciplineName =
-  | "Brand identity"
-  | "Campaign & community graphics"
-  | "Frontend development";
-
 export interface WorkImage {
   src: string; // path under /public, e.g. "/work/talorify.jpg"
   alt: string; // describe what the image shows, for screen readers
   width: number; // intrinsic pixel width of the file
   height: number; // intrinsic pixel height of the file
-}
-
-export interface WorkItem {
-  title: string;
-  discipline: DisciplineName;
-  year?: string;
-  summary: string;
-  href?: string;
-  image?: WorkImage;
 }
 
 /**
@@ -97,78 +83,6 @@ export const services = [
       "Long-form technical reference, written and self-published through Amazon KDP.",
   },
 ] as const;
-
-export const work: WorkItem[] = [
-  // ---- Brand identity ------------------------------------------------------
-  {
-    title: "Talorify",
-    discipline: "Brand identity",
-    year: "2026",
-    summary:
-      "Logo and two-colour identity for a Chrome extension that helps job seekers get past ATS filters.",
-  },
-  {
-    title: "KAIDIVOX Technologies",
-    discipline: "Brand identity",
-    year: "2026",
-    summary:
-      "Logo system and brand pack for a technology company, from monogram exploration to a full identity kit.",
-  },
-  {
-    title: "MetaKeySwap",
-    discipline: "Brand identity",
-    year: "2025",
-    summary: "Official project logo and launch marketing materials.",
-  },
-  {
-    title: "ZeroXKing",
-    discipline: "Brand identity",
-    year: "2025",
-    summary: "Official project logo and launch marketing materials.",
-  },
-  // ---- Campaign & community graphics --------------------------------------
-  {
-    title: "FOMO Life (FOMO人生)",
-    discipline: "Campaign & community graphics",
-    year: "2026",
-    summary:
-      "Pitch-deck visuals and an educational campaign for a Web3 protocol, led as the visual designer.",
-  },
-  {
-    title: "Lucky Sheep (幸运羊)",
-    discipline: "Campaign & community graphics",
-    year: "2026",
-    summary:
-      "Fire-themed ram profile picture, banner and promotional graphics for a Web3 community.",
-  },
-  {
-    title: "Abia Web3 Network",
-    discipline: "Campaign & community graphics",
-    year: "2026",
-    summary:
-      "Brand assets and a LinkedIn content calendar for a regional Web3 community.",
-  },
-  {
-    title: "Abia Fashion Week",
-    discipline: "Campaign & community graphics",
-    year: "2026",
-    summary:
-      "Event flyer for the “Show Us Your Style” edition with Navade Brew.",
-  },
-  {
-    title: "APEX Foundation",
-    discipline: "Campaign & community graphics",
-    summary:
-      "Banner for a Web3 brand, built on a gold, black and orange palette and a phoenix theme.",
-  },
-  // ---- Frontend development -------------------------------------------------
-  {
-    title: "ThemisX",
-    discipline: "Frontend development",
-    summary:
-      "Brand and front-end work with Pantheon Forge Ltd on the digital-fraud track of Zenith Bank Zecathon 6.0.",
-  },
-];
 
 export const book = {
   title: "UAV Software Development",
@@ -239,6 +153,7 @@ export interface WebBuild {
 }
 
 export const webBuilds: WebBuild[] = [
+  { title: "ThemisX", tagline: "Brand & front-end · Zenith Bank Zecathon 6.0", placeholder: false },
   { title: "Your brand studio site", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#e2574c", bg: "#141413", ink: "#f2f0eb", url: "yourstudio.com" } },
   { title: "Your fintech product", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#3b82f6", bg: "#0e1424", ink: "#e8eefc", url: "yourfintech.io" } },
   { title: "Your creative agency", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#c8f169", bg: "#10130d", ink: "#eef5dc", url: "youragency.co" } },
@@ -265,11 +180,9 @@ export interface BrandSystem {
 export const brandSystems: BrandSystem[] = [
   { slug: "kaidivox", title: "KAIDIVOX Technologies", year: "2026", summary: "Logo system and brand pack for a technology company, from monogram exploration to a full identity kit." },
   { slug: "talorify", title: "Talorify", year: "2026", summary: "Logo and two-colour identity for a Chrome extension that helps job seekers get past ATS filters." },
-  { slug: "metakeyswap", title: "MetaKeySwap", year: "2025", summary: "Official project logo and launch marketing materials." },
-  { slug: "zeroxking", title: "ZeroXKing", year: "2025", summary: "Official project logo and launch marketing materials." },
 ];
 
-export const designCategories = ["Social Media", "Web3", "Pitch Decks", "Thumbnails", "Events"] as const;
+export const designCategories = ["Social Media", "Web3", "Pitch Decks", "Thumbnails", "Events", "Abia Web3 Network"] as const;
 export type DesignCategory = (typeof designCategories)[number];
 
 /**
@@ -289,7 +202,7 @@ export const designs: DesignPiece[] = [
   { title: "APEX Foundation banner", category: "Web3" },
   { title: "FOMO Life pitch-deck visuals", category: "Pitch Decks" },
   { title: "Abia Fashion Week flyer", category: "Events" },
-  { title: "Abia Web3 Network LinkedIn graphics", category: "Social Media" },
+  { title: "Abia Web3 Network LinkedIn graphics", category: "Abia Web3 Network" },
   { title: "Lucky Sheep profile picture", category: "Web3" },
   { title: "FOMO Life campaign graphics", category: "Social Media" },
   { title: "Community meetup flyer", category: "Events" },

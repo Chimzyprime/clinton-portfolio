@@ -210,3 +210,39 @@ export const about = {
     "Most of my work is for Web3, fintech and community projects. I treat identity, graphics and code as one system: a consistent visual language that is also built properly for the web.",
   ],
 } as const;
+
+/**
+ * Web builds carousel (components/WebBuilds.tsx).
+ *
+ * The six entries below are PLACEHOLDERS: generic mockups, not real projects.
+ * To swap one for a real site, replace the entry with:
+ *   {
+ *     title: "Project name",
+ *     tagline: "Brand site, Next.js",
+ *     href: "https://the-live-site.com",
+ *     image: { src: "/builds/project.webp", alt: "…", width: 1600, height: 1000 },
+ *   }
+ * Put the hero screenshot (16:10 works best) in /public/builds/. When `image`
+ * is set the card shows the screenshot inside the browser frame; when `href`
+ * is set the caption shows a "Visit site" link. `placeholder` and the colour
+ * fields can then be deleted.
+ */
+export interface WebBuild {
+  title: string;
+  tagline: string;
+  href?: string;
+  image?: { src: string; alt: string; width: number; height: number };
+  /** Marks a stand-in mockup. Remove when the entry is a real site. */
+  placeholder?: boolean;
+  /** Placeholder mockup colours only. */
+  mock?: { accent: string; bg: string; ink: string; url: string };
+}
+
+export const webBuilds: WebBuild[] = [
+  { title: "Your brand studio site", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#e2574c", bg: "#141413", ink: "#f2f0eb", url: "yourstudio.com" } },
+  { title: "Your fintech product", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#3b82f6", bg: "#0e1424", ink: "#e8eefc", url: "yourfintech.io" } },
+  { title: "Your creative agency", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#c8f169", bg: "#10130d", ink: "#eef5dc", url: "youragency.co" } },
+  { title: "Your Web3 community", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#a78bfa", bg: "#15111f", ink: "#efeaff", url: "yourdao.xyz" } },
+  { title: "Your fashion label", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#1a1917", bg: "#efe9dd", ink: "#1a1917", url: "yourlabel.com" } },
+  { title: "Your event landing page", tagline: "Placeholder · Next.js", placeholder: true, mock: { accent: "#f59e0b", bg: "#1a1410", ink: "#fbf1e0", url: "yourevent.com" } },
+];

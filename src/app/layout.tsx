@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { site } from "@/data/site";
 import { Header } from "@/components/Header";
@@ -10,6 +10,13 @@ import { Footer } from "@/components/Footer";
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap",
+});
+// Display face for headings. Weights limited to what the design uses.
+const display = Manrope({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-display",
   display: "swap",
 });
 const mono = IBM_Plex_Mono({
@@ -41,18 +48,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Colours the mobile browser bar to match the default (dark) theme.
-  themeColor: "#0a0a0a",
+  // Colours the mobile browser bar to match the default (warm light) theme.
+  themeColor: "#f6f2ea",
 };
 
 /**
  * Runs before first paint. Reads the saved theme and sets it on <html>, so a
- * visitor who chose "light" never sees a dark flash (or a layout jump).
- * Dark is the default. Wrapped in try/catch because storage can be blocked.
+ * visitor who chose "dark" never sees a light flash (or a layout jump).
+ * Light (warm off-white) is the default. Wrapped in try/catch because storage can be blocked.
  */
 const themeScript = `
 (function () {
-  var theme = "dark";
+  var theme = "light";
   try {
     var saved = localStorage.getItem("theme");
     if (saved === "light" || saved === "dark") theme = saved;
@@ -71,8 +78,8 @@ export default function RootLayout({
     // React hydrates, which is intentional.
     <html
       lang="en"
-      data-theme="dark"
-      className={`${sans.variable} ${mono.variable}`}
+      data-theme="light"
+      className={`${sans.variable} ${display.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
       <head>

@@ -1,6 +1,6 @@
 # Clinton Chimaroke — portfolio
 
-Swiss-minimalist, dark-first portfolio with a light editorial theme.
+Swiss editorial portfolio: warm off-white with a muted gold accent, Manrope headings and Inter body text, plus a dark theme toggle.
 Next.js (App Router) · TypeScript · Tailwind CSS. No runtime dependencies beyond React and Next.
 
 ## Edit your content
@@ -33,6 +33,7 @@ npm run build   # production build
 
 ## Notes
 
-- Theme: dark by default; the choice is saved in `localStorage` and applied before first paint (no flash).
+- Portrait: put the photo in `public/` and set `portrait` at the top of `src/data/site.ts` (src, alt, real width and height; 4:5 fits best). Until then the hero shows a same-sized placeholder.
+- Theme: warm light by default; the choice is saved in `localStorage` and applied before first paint (no flash).
 - Colours and contrast ratios are documented at the top of `src/app/globals.css`.
 - Deploys on Vercel: push to `main`.

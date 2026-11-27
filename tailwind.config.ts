@@ -17,6 +17,7 @@ const config: Config = {
         // Set by next/font in layout.tsx; fallbacks are size-adjusted by Next
         // so swapping to the web font does not shift the layout.
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       maxWidth: {

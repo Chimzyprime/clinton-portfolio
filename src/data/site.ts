@@ -32,6 +32,14 @@ export interface WorkItem {
   image?: WorkImage;
 }
 
+/**
+ * Hero portrait. Leave as `undefined` until you have the photo; the hero then
+ * shows a same-sized placeholder so the layout is identical either way.
+ * Put the file in /public (e.g. /public/portrait.jpg) and set its real pixel
+ * width and height. A 4:5 portrait (e.g. 1200 x 1500) fits the frame best.
+ */
+export const portrait: WorkImage | undefined = undefined;
+
 export const site = {
   name: "Nwachukwu Clinton Chimaroke",
   shortName: "Clinton Chimaroke",

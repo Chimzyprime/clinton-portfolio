@@ -52,17 +52,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Colours the mobile browser bar; follows the system preference.
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#131312" },
-    { media: "(prefers-color-scheme: light)", color: "#f5f2ec" },
-  ],
+  // Colours the mobile browser bar to match the default (dark) theme.
+  themeColor: "#131312",
 };
 
 /**
  * Runs before first paint, so there is never a flash of the wrong theme.
- * Order: an explicitly saved choice wins; otherwise a visitor whose system
- * asks for light gets light; otherwise dark (the default).
+ * A saved choice wins; otherwise dark, the default for first-time visitors.
  * Wrapped in try/catch because storage can be blocked.
  */
 const themeScript = `
@@ -70,11 +66,7 @@ const themeScript = `
   var theme = "dark";
   try {
     var saved = localStorage.getItem("theme");
-    if (saved === "light" || saved === "dark") {
-      theme = saved;
-    } else if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-      theme = "light";
-    }
+    if (saved === "light" || saved === "dark") theme = saved;
   } catch (e) {}
   document.documentElement.setAttribute("data-theme", theme);
 })();

@@ -7,13 +7,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "var(--bg)",
-        fg: "var(--fg)",
-        muted: "var(--muted)",
-        line: "var(--line)",
-        "line-strong": "var(--line-strong)",
+        // Short utility names (bg-bg, text-fg, text-muted...) map onto the
+        // semantic tokens in globals.css.
+        bg: "var(--background)",
+        fg: "var(--foreground)",
+        muted: "var(--text-secondary)",
+        subtle: "var(--text-muted)",
         surface: "var(--surface)",
+        "surface-elevated": "var(--surface-elevated)",
+        line: "var(--border)",
+        "line-strong": "var(--border-strong)",
         accent: "var(--accent)",
+        "accent-fg": "var(--accent-foreground)",
       },
       fontFamily: {
         // Set by next/font in layout.tsx; fallbacks are size-adjusted by Next

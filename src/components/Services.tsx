@@ -6,7 +6,7 @@ export function Services() {
     <Section id="services" index="02" title="Services">
       <ul className="grid gap-x-12 gap-y-12 sm:grid-cols-2">
         {services.map((service) => (
-          <li key={service.title} className="border-t border-fg pt-5">
+          <li key={service.title} className="border-t border-line-strong pt-5">
             <h3 className="text-xl font-semibold tracking-tight">
               {service.title}
             </h3>

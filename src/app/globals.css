@@ -6,50 +6,54 @@
   ============================================================================
   DESIGN TOKENS
   ============================================================================
-  Two independently tuned neutral themes. Dark is the default (and the
-  fallback if the theme script never runs).
+  Two independently tuned neutral themes. Dark is the default for first-time
+  visitors (and the fallback if the theme script never runs).
 
-  --accent is deliberately neutral for now: the signature accent colour is
-  not decided yet. Everything that should one day carry the accent already
-  reads var(--accent), so introducing it later is a one-line change per theme.
+  The signature accent colour is NOT decided yet. --accent is therefore the
+  neutral foreground for now; the primary button, focus ring and link hover
+  already read it, so a future accent is a one-line change per theme.
 
   Contrast (WCAG, measured):
-    dark : fg 16.3:1 | muted 7.2:1 on bg, 6.7:1 on surface
-    light: fg 15.7:1 | muted 6.0:1 on bg, 5.4:1 on surface
-  --line is for hairline dividers only. --line-strong outlines controls whose
-  label already identifies them.
+    dark : primary 16.3:1 | secondary 7.2:1 | muted 5.4:1 on background
+    light: primary 15.7:1 | secondary 6.0:1 | muted 5.2:1 on background
+  All text clears AA (4.5:1) on background and surface. --border is for
+  hairline dividers; --border-strong outlines controls with visible labels.
 */
 :root,
 [data-theme="dark"] {
-  --bg: #131312; /* deep charcoal, not pure black */
-  --surface: #1b1b19; /* slightly lighter charcoal: navbar, panels */
-  --surface-hover: #242422; /* tonal hover step */
-  --fg: #f2f0eb; /* soft white */
-  --muted: #a3a19b; /* secondary text */
-  --line: #2c2b28; /* subtle dividers */
-  --line-strong: #44423e; /* outlines on secondary controls */
-  --accent: var(--fg); /* placeholder until the accent is approved */
-  --on-fg: #131312; /* text on a solid --fg button */
+  --background: #131312; /* deep charcoal, not pure black */
+  --surface: #1b1b19; /* navbar, panels */
+  --surface-elevated: #242422; /* hover and raised states */
+  --foreground: #f2f0eb; /* soft white */
+  --text-primary: var(--foreground);
+  --text-secondary: #a3a19b; /* body copy, links at rest */
+  --text-muted: #8c8a84; /* labels, metadata */
+  --border: #2c2b28;
+  --border-strong: #44423e;
+  --accent: var(--foreground); /* neutral placeholder */
+  --accent-foreground: var(--background);
   color-scheme: dark;
 }
 
 /* Light is its own palette (warm paper), not an inversion of dark. */
 [data-theme="light"] {
-  --bg: #f5f2ec; /* warm off-white */
-  --surface: #ebe7de; /* warm neutral, a step darker than paper */
-  --surface-hover: #e2ddd2;
-  --fg: #1a1917; /* deep charcoal */
-  --muted: #5f5c55;
-  --line: #dcd7cc;
-  --line-strong: #b9b3a6;
-  --accent: var(--fg);
-  --on-fg: #f5f2ec;
+  --background: #f5f2ec; /* warm off-white, not glaring white */
+  --surface: #ebe7de;
+  --surface-elevated: #e2ddd2;
+  --foreground: #1a1917; /* dark charcoal */
+  --text-primary: var(--foreground);
+  --text-secondary: #5f5c55;
+  --text-muted: #68645d;
+  --border: #dcd7cc; /* subtle warm grey */
+  --border-strong: #b9b3a6;
+  --accent: var(--foreground);
+  --accent-foreground: var(--background);
   color-scheme: light;
 }
 
 @layer base {
   html {
-    background: var(--bg);
+    background: var(--background);
     /* Anchored section links glide, unless the visitor asked for less motion. */
     scroll-behavior: smooth;
     /* Prevent iOS from inflating text on rotate, which shifts layout. */
@@ -57,8 +61,8 @@
   }
 
   body {
-    background: var(--bg);
-    color: var(--fg);
+    background: var(--background);
+    color: var(--foreground);
     font-family: var(--font-sans), system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -79,8 +83,8 @@
   }
 
   ::selection {
-    background: var(--fg);
-    color: var(--bg);
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -130,7 +134,7 @@
 */
 .nav-pill {
   background: color-mix(in srgb, var(--surface) 84%, transparent);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   box-shadow: 0 8px 24px -16px rgb(0 0 0 / 0.45);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -154,9 +158,19 @@
   ============================================================================
 */
 
-/* Portrait lighting: restrained, behind the subject only. The cutout already
-   carries the photo's own blue/red rim light; these two soft pools just let
-   it sit in the scene. Radial gradients fading to transparent, no hard edges. */
+/*
+  PORTRAIT
+  The cutout's suit runs off the photo's left and right edges about 63% of
+  the way down. Fading those edges with masks is what made the portrait look
+  washed out (and, in light mode, boxed). Instead, .portrait-crop shows the
+  image only down to just above that point, so the silhouette is complete on
+  both sides, and the hero sits it on its bottom edge like a bust on a
+  baseline. No masks, filters, blend modes or opacity touch the photograph.
+
+  The only added light is one faint pool per side, behind the head and
+  shoulders, in dark mode only. The photo's own blue/red rim light does the
+  rest. These sit outside the crop box, so they are never clipped square.
+*/
 .portrait-light {
   position: relative;
   isolation: isolate;
@@ -168,70 +182,33 @@
   z-index: -1;
   pointer-events: none;
   border-radius: 9999px;
-  filter: blur(36px);
+  filter: blur(40px);
 }
 .portrait-light::before {
-  left: -8%;
-  top: 14%;
-  width: 62%;
-  height: 66%;
-  background: radial-gradient(closest-side, rgb(40 110 245 / 0.26), transparent);
+  left: 2%;
+  top: 8%;
+  width: 52%;
+  height: 70%;
+  background: radial-gradient(closest-side, rgb(40 110 245 / 0.16), transparent);
 }
 .portrait-light::after {
-  right: -8%;
-  top: 22%;
-  width: 52%;
-  height: 60%;
-  background: radial-gradient(closest-side, rgb(225 45 40 / 0.2), transparent);
+  right: 2%;
+  top: 14%;
+  width: 46%;
+  height: 64%;
+  background: radial-gradient(closest-side, rgb(225 45 40 / 0.12), transparent);
 }
-/* On warm paper coloured light reads as a stain, so it is barely there. */
+/* On warm paper coloured light reads as a stain, so there is none. */
 [data-theme="light"] .portrait-light::before,
 [data-theme="light"] .portrait-light::after {
-  opacity: 0.22;
+  display: none;
 }
 
-.portrait-img {
-  /* Two masks, intersected: the sides fade so the shoulders melt into the
-     background, and the bottom fades so the figure has no hard base line. */
-  -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 12%,
-      #000 88%,
-      transparent 100%
-    ),
-    linear-gradient(to bottom, #000 74%, transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 12%,
-      #000 88%,
-      transparent 100%
-    ),
-    linear-gradient(to bottom, #000 74%, transparent 100%);
-  mask-composite: intersect;
-}
-
-/* Light theme: a dark suit fading over paper turns into a grey wash, so the
-   fades are much tighter: just enough to soften the image edges. */
-[data-theme="light"] .portrait-img {
-  -webkit-mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 4%,
-      #000 96%,
-      transparent 100%
-    ),
-    linear-gradient(to bottom, #000 92%, transparent 100%);
-  mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 4%,
-      #000 96%,
-      transparent 100%
-    ),
-    linear-gradient(to bottom, #000 92%, transparent 100%);
+.portrait-crop {
+  overflow: hidden;
+  /* 1145 x 800: the cutout's width, cropped just above where the suit meets
+     the photo's side edges. Reserves the space, so nothing shifts. */
+  aspect-ratio: 1145 / 800;
 }
 
 /* Entrance: a short fade and 12px rise, staggered with --d. Only opacity and
@@ -260,8 +237,8 @@
   animation-delay: var(--d, 0ms);
 }
 .reveal-portrait {
-  animation: fade-in 900ms ease both;
-  animation-delay: 200ms;
+  animation: fade-in 700ms ease both;
+  animation-delay: 150ms;
 }
 
 @layer components {
@@ -288,21 +265,21 @@
       color 200ms ease;
   }
   .btn-primary {
-    background: var(--fg);
-    color: var(--on-fg);
-    border: 1px solid var(--fg);
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border: 1px solid var(--accent);
   }
   .btn-primary:hover {
-    background: color-mix(in srgb, var(--fg) 86%, var(--bg));
+    background: color-mix(in srgb, var(--accent) 86%, var(--background));
   }
   .btn-secondary {
     background: transparent;
-    color: var(--fg);
-    border: 1px solid var(--line-strong);
+    color: var(--foreground);
+    border: 1px solid var(--border-strong);
   }
   .btn-secondary:hover {
     background: var(--surface);
-    border-color: var(--fg);
+    border-color: var(--foreground);
   }
   /* The arrow nudges up and right on hover: small, directional, no bounce. */
   .btn-arrow {
@@ -318,11 +295,11 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    color: var(--fg);
+    color: var(--foreground);
     transition: background-color 200ms ease;
   }
   .icon-btn:hover {
-    background: var(--surface-hover);
+    background: var(--surface-elevated);
   }
 
   /* Shared container: every section and the navbar sit on this grid. */
@@ -332,7 +309,7 @@
 
   /* Small uppercase mono label used for indexes and metadata. */
   .label {
-    @apply font-mono text-xs uppercase tracking-[0.14em] text-muted;
+    @apply font-mono text-xs uppercase tracking-[0.14em] text-subtle;
   }
 
   /* Underline link; hover strengthens the underline, no layout change. */

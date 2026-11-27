@@ -12,12 +12,15 @@ export function Reveal({
   children,
   delay = 0,
   as: Tag = "div",
+  from = "up",
   className = "",
 }: {
   children: ReactNode;
   /** Stagger, in ms. */
   delay?: number;
   as?: "div" | "span" | "li";
+  /** Direction it enters from. */
+  from?: "up" | "left" | "right";
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -46,7 +49,7 @@ export function Reveal({
   return (
     <Tag
       ref={ref as never}
-      className={`reveal-up ${shown ? "is-shown" : ""} ${className}`}
+      className={`reveal-up ${from === "up" ? "" : `from-${from}`} ${shown ? "is-shown" : ""} ${className}`}
       style={{ ["--d" as string]: `${delay}ms` }}
     >
       {children}

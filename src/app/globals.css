@@ -549,12 +549,16 @@
   transition-delay: var(--d, 0ms);
   will-change: opacity, transform;
 }
-.reveal-up.is-shown { opacity: 1; transform: translateY(0); }
+.reveal-up.from-left { transform: translateX(-56px); }
+.reveal-up.from-right { transform: translateX(56px); }
+.reveal-up.is-shown { opacity: 1; transform: none; }
 
 .about-grid { display: grid; gap: 2.5rem; }
 @media (min-width: 1024px) {
   .about-grid { grid-template-columns: 40% 1fr; gap: 5.5rem; align-items: start; }
 }
-.about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; }
+.about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; width: min(100%, 220px); }
+.about-portrait img { filter: grayscale(1) contrast(1.05); }
+@media (min-width: 1024px) { .about-portrait { width: min(100%, 280px); } }
 .about-fact { display: flex; flex-direction: column; gap: 0.25rem; padding-block: 1rem; border-top: 1px solid var(--border); }
 .about-fact:first-child { border-top: none; padding-top: 0; }

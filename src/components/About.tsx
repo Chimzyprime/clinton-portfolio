@@ -20,7 +20,7 @@ export function About() {
               src={portrait.src}
               alt={portrait.alt}
               fill
-              sizes="(min-width: 1024px) 34vw, 92vw"
+              sizes="(min-width: 1024px) 280px, 220px"
               className="object-cover"
             />
           </Reveal>
@@ -51,13 +51,13 @@ export function About() {
       </div>
 
       {/* How I approach the work */}
-      <div className="mt-20 border-t border-line pt-14 lg:mt-28 lg:pt-20">
+      <div className="mt-20 border-t border-line pt-14 [overflow-x:clip] lg:mt-28 lg:pt-20">
         <Reveal as="span" className="label block">
           How I approach the work
         </Reveal>
         <ul className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
           {about.principles.map((p, i) => (
-            <Reveal key={p.n} as="li" delay={80 + i * 90} className="max-w-[28em]">
+            <Reveal key={p.n} as="li" from={i % 2 === 0 ? "left" : "right"} delay={60} className="max-w-[28em]">
               <p className="font-mono text-sm text-text-muted">{p.n}</p>
               <p className="mt-2 text-lg font-semibold tracking-tight">{p.title}</p>
               <p className="mt-2 text-text-secondary">{p.body}</p>

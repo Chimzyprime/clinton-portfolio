@@ -3,7 +3,7 @@ import { Section } from "./Section";
 
 export function Services() {
   return (
-    <Section id="services" index="02" title="Services">
+    <Section id="services" index="03" title="Services">
       <ul className="grid gap-x-12 gap-y-12 sm:grid-cols-2">
         {services.map((service) => (
           <li key={service.title} className="border-t border-line-strong pt-5">

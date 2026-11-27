@@ -119,9 +119,44 @@ export const toolkit = [
 ] as const;
 
 export const about = {
-  paragraphs: [
-    "I am based in Umudike, Abia State, Nigeria, and I am studying Computer Engineering at Michael Okpara University of Agriculture, Umudike.",
-    "Most of my work is for Web3, fintech and community projects. I treat identity, graphics and code as one system: a consistent visual language that is also built properly for the web.",
+  heading: "The mind behind the work.",
+  intro:
+    "I'm Nwachukwu Clinton Chimaroke, a Brand Designer and Full-Stack Developer combining creative thinking, visual design, and technology to build distinctive brands and meaningful digital experiences.",
+  paragraph:
+    "I approach every project by understanding the problem first, developing a clear creative direction, and bringing that vision to life through thoughtful design and purposeful technology.",
+  title: "Brand Designer × Full-Stack Developer",
+  location: "Based in Nigeria · Working Worldwide",
+  principles: [
+    {
+      n: "01",
+      title: "Understand",
+      body: "Every meaningful project begins with understanding the problem, the audience, and the purpose behind the work.",
+    },
+    {
+      n: "02",
+      title: "Think",
+      body: "Developing a clear direction that connects creative strategy, visual identity, and user experience.",
+    },
+    {
+      n: "03",
+      title: "Design",
+      body: "Creating thoughtful visual systems and digital experiences with attention to detail, consistency, and usability.",
+    },
+    {
+      n: "04",
+      title: "Build",
+      body: "Turning ideas and designs into functional, responsive digital experiences through development.",
+    },
+  ],
+  capabilities: [
+    {
+      heading: "Brand & creative",
+      items: ["Brand identity design", "Graphic design", "Visual communication", "Creative direction"],
+    },
+    {
+      heading: "Development",
+      items: ["Frontend development", "Backend development", "Full-stack development", "UI implementation"],
+    },
   ],
 } as const;
 

@@ -540,3 +540,21 @@
   .bento-logo { grid-row: span 2; aspect-ratio: auto; }
   .bento-tile { min-height: 0; }
 }
+
+/* ---- About (About.tsx, Reveal.tsx): scroll-triggered fade + rise ---- */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 650ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+  will-change: opacity, transform;
+}
+.reveal-up.is-shown { opacity: 1; transform: translateY(0); }
+
+.about-grid { display: grid; gap: 2.5rem; }
+@media (min-width: 1024px) {
+  .about-grid { grid-template-columns: 40% 1fr; gap: 5.5rem; align-items: start; }
+}
+.about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; }
+.about-fact { display: flex; flex-direction: column; gap: 0.25rem; padding-block: 1rem; border-top: 1px solid var(--border); }
+.about-fact:first-child { border-top: none; padding-top: 0; }

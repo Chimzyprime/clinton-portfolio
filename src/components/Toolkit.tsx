@@ -3,7 +3,7 @@ import { Section } from "./Section";
 
 export function Toolkit() {
   return (
-    <Section id="toolkit" index="04" title="Toolkit">
+    <Section id="toolkit" index="05" title="Toolkit">
       <div className="grid gap-10 sm:grid-cols-3">
         {toolkit.map((group) => (
           <div key={group.group}>

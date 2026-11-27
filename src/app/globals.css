@@ -553,12 +553,35 @@
 .reveal-up.from-right { transform: translateX(56px); }
 .reveal-up.is-shown { opacity: 1; transform: none; }
 
-.about-grid { display: grid; gap: 2.5rem; }
+.about-halves { display: grid; gap: 2.5rem; }
 @media (min-width: 1024px) {
-  .about-grid { grid-template-columns: 40% 1fr; gap: 5.5rem; align-items: start; }
+  .about-halves { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
 }
 .about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; width: min(100%, 220px); }
 .about-portrait img { filter: grayscale(1) contrast(1.05); }
 @media (min-width: 1024px) { .about-portrait { width: min(100%, 280px); } }
+@media (max-width: 1023px) {
+  .reveal-up.from-left { transform: translateX(56px); }
+  .reveal-up.from-left.is-shown { transform: none; }
+}
+
+/* Approach timeline (ApproachTimeline.tsx): guide line, travelling light, stops. */
+.tl { position: relative; --lx: 6px; }
+@media (min-width: 1024px) { .tl { --lx: 50%; } }
+.tl-line, .tl-fill, .tl-dot { position: absolute; left: var(--lx); }
+.tl-line { top: 0; bottom: 0; width: 1px; transform: translateX(-50%); background: var(--border-strong); }
+.tl-fill { top: 0; width: 1px; height: calc(var(--p) * 100%); transform: translateX(-50%); background: var(--accent); }
+.tl-dot { top: calc(var(--p) * 100%); width: 11px; height: 11px; border-radius: 9999px; transform: translate(-50%, -50%); background: var(--accent); box-shadow: 0 0 14px 3px color-mix(in srgb, var(--accent) 55%, transparent); }
+.tl ol { display: grid; gap: 3.5rem; }
+.tl-item { position: relative; padding-left: 2.25rem; }
+.tl-node { position: absolute; left: var(--lx); top: 0.4rem; width: 9px; height: 9px; border-radius: 9999px; transform: translateX(-50%); background: var(--background); border: 1px solid var(--border-strong); transition: background-color 400ms ease, border-color 400ms ease; z-index: 1; }
+.tl-node[data-passed] { background: var(--accent); border-color: var(--accent); }
+@media (min-width: 1024px) {
+  .tl-item { padding-left: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: 6rem; }
+  .tl-right { grid-column: 2; }
+  .tl-left { grid-column: 1; text-align: right; margin-left: auto; }
+  .tl ol { gap: 4rem; }
+}
+.tl-card { max-width: 26em; }
 .about-fact { display: flex; flex-direction: column; gap: 0.25rem; padding-block: 1rem; border-top: 1px solid var(--border); }
 .about-fact:first-child { border-top: none; padding-top: 0; }

@@ -33,7 +33,7 @@ const BUILDS: Build[] = [
   { title: "Event landing page", url: "yourevent.com", accent: "#f59e0b", bg: "#1a1410", ink: "#fbf1e0" },
 ];
 
-const AUTOPLAY_MS = 3800;
+const AUTOPLAY_MS = 2400;
 
 function Mock({ b }: { b: Build }) {
   return (

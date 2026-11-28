@@ -63,24 +63,50 @@ export const site = {
 /** What you offer. UI/UX design is deliberately not listed. */
 export const services = [
   {
-    title: "Brand identity",
+    n: "01",
+    title: "Brand identity design",
     description:
-      "Logo systems, typography and colour, and the guidelines that keep a brand consistent.",
+      "Building distinctive and cohesive brand identities that give businesses a recognisable visual presence. From logo design and logo systems to typography, colour systems and brand guidelines, I create visual identities that communicate a brand\u2019s personality and values.",
+    capabilities: [
+      "Logo design",
+      "Logo systems",
+      "Brand identity development",
+      "Typography",
+      "Colour systems",
+      "Brand guidelines",
+      "Visual identity applications",
+    ],
+    visual: "brand",
   },
   {
+    n: "02",
     title: "Campaign & community graphics",
     description:
-      "Flyers, banners and social assets for launches, events and online communities.",
+      "Creating engaging visual content that helps brands, projects and online communities communicate, promote and connect with their audiences. From campaign creatives to event materials and social media assets, I design visuals that bring ideas and campaigns to life.",
+    capabilities: [
+      "Campaign graphics",
+      "Community graphics",
+      "Promotional flyers",
+      "Banners",
+      "Event graphics",
+      "Social media assets",
+      "Launch creatives",
+    ],
+    visual: "campaign",
   },
   {
-    title: "Frontend development",
+    n: "03",
+    title: "Full-stack development",
     description:
-      "Fast, accessible websites built with HTML, CSS, JavaScript, TypeScript, React, Next.js and Tailwind CSS.",
-  },
-  {
-    title: "Technical writing & books",
-    description:
-      "Long-form technical reference, written and self-published through Amazon KDP.",
+      "Building responsive, functional and accessible websites and web applications. I work across frontend and backend development to turn ideas and existing designs into practical digital experiences.",
+    capabilities: [
+      "Website development",
+      "Web application development",
+      "Frontend development",
+      "Backend development",
+      "Landing page implementation from existing designs",
+    ],
+    visual: "code",
   },
 ] as const;
 
@@ -93,30 +119,43 @@ export const book = {
 } as const;
 
 /** Tools grouped by discipline. Keep this list to things you actually use. */
-export const toolkit = [
+/**
+ * Tools & technologies. `icon` is a key of brandIcons (an official mark) or a
+ * neutral Lucide icon name for tools that have no mark in that set.
+ */
+export interface Tool {
+  name: string;
+  kind: string;
+  icon: string;
+}
+
+export const tools: { group: string; blurb: string; items: readonly Tool[] }[] = [
   {
-    group: "Brand & graphics",
-    items: ["Adobe Illustrator", "Adobe Photoshop", "CorelDRAW", "Canva", "Figma"],
-  },
-  {
-    group: "Frontend",
+    group: "Brand & graphic design",
+    blurb: "The software behind identities, campaign graphics and print.",
     items: [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "TypeScript",
-      "React",
-      "Next.js",
-      "Tailwind CSS",
-      "Vite",
-      "Git & GitHub",
+      { name: "Adobe Illustrator", kind: "Vector graphics", icon: "PenTool" },
+      { name: "Adobe Photoshop", kind: "Image editing", icon: "ImageIcon" },
+      { name: "Canva Pro", kind: "Design platform", icon: "LayoutTemplate" },
     ],
   },
   {
-    group: "Publishing",
-    items: ["Amazon KDP"],
+    group: "Full-stack development",
+    blurb: "Languages, frameworks and platforms I build websites with.",
+    items: [
+      { name: "HTML", kind: "Language", icon: "html" },
+      { name: "CSS", kind: "Language", icon: "css" },
+      { name: "JavaScript", kind: "Language", icon: "javascript" },
+      { name: "TypeScript", kind: "Language", icon: "typescript" },
+      { name: "React", kind: "UI library", icon: "react" },
+      { name: "Next.js", kind: "React framework", icon: "nextjs" },
+      { name: "Tailwind CSS", kind: "CSS framework", icon: "tailwind" },
+      { name: "Framer", kind: "No-code website platform", icon: "framer" },
+      { name: "Framer Motion", kind: "React animation library", icon: "Waypoints" },
+      { name: "GitHub", kind: "Code hosting & version control", icon: "github" },
+    ],
   },
-] as const;
+];
 
 export const about = {
   heading: "The mind behind the work.",

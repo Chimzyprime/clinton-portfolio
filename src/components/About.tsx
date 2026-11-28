@@ -6,7 +6,7 @@ import { Reveal } from "./Reveal";
 /**
  * About: a centred heading, then two equal halves (portrait + identity on
  * the left, the introduction on the right), then "How I approach the work"
- * on a guide line and "What I work across" in two equal columns. Copy lives
+ * on a guide line. Copy lives
  * in data/site.ts; this file is layout and reveal only.
  */
 export function About() {
@@ -69,31 +69,6 @@ export function About() {
           </Reveal>
           <div className="mt-12 lg:mt-16">
             <ApproachTimeline principles={about.principles} />
-          </div>
-        </div>
-
-        {/* What I work across */}
-        <div className="mt-20 border-t border-line pt-14 lg:mt-24 lg:pt-20">
-          <Reveal>
-            <h3 className="text-center text-[clamp(1.25rem,2.2vw,1.75rem)] font-semibold tracking-tight">
-              What I work across
-            </h3>
-          </Reveal>
-          <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2 sm:gap-6">
-            {about.capabilities.map((group, gi) => (
-              <Reveal key={group.heading} delay={80 + gi * 100}>
-                <div className="capability-card h-full rounded-2xl border border-line bg-surface p-6 sm:p-8">
-                  <p className="text-lg font-semibold tracking-tight">{group.heading}</p>
-                  <ul className="mt-4">
-                    {group.items.map((item) => (
-                      <li key={item} className="about-fact text-text-secondary">
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </div>

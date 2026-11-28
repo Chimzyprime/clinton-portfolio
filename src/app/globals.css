@@ -9,9 +9,9 @@
   Two independently tuned neutral themes. Dark is the default for first-time
   visitors (and the fallback if the theme script never runs).
 
-  The signature accent colour is NOT decided yet. --accent is therefore the
-  neutral foreground for now; the primary button, focus ring and link hover
-  already read it, so a future accent is a one-line change per theme.
+  The signature accent is the warm red (--highlight, tuned per theme). --accent
+  points at it; the primary button, focus ring, link hover, nav dot and the
+  approach timeline all read --accent, so changing it is a one-line edit.
 
   Contrast (WCAG, measured):
     dark : primary 16.3:1 | secondary 7.2:1 | muted 5.4:1 on background
@@ -30,7 +30,7 @@
   --text-muted: #8c8a84; /* labels, metadata */
   --border: #2c2b28;
   --border-strong: #44423e;
-  --accent: var(--foreground); /* neutral placeholder */
+  --accent: var(--highlight);
   --accent-foreground: var(--background);
   --highlight: #e2574c;
   color-scheme: dark;
@@ -47,7 +47,7 @@
   --text-muted: #68645d;
   --border: #dcd7cc; /* subtle warm grey */
   --border-strong: #b9b3a6;
-  --accent: var(--foreground);
+  --accent: var(--highlight);
   --accent-foreground: var(--background);
   --highlight: #b3302a;
   color-scheme: light;

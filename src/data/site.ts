@@ -176,16 +176,6 @@ export const about = {
       body: "Turning ideas and designs into functional, responsive digital experiences through development.",
     },
   ],
-  capabilities: [
-    {
-      heading: "Brand & creative",
-      items: ["Brand identity design", "Graphic design", "Visual communication", "Creative direction"],
-    },
-    {
-      heading: "Development",
-      items: ["Frontend development", "Backend development", "Full-stack development", "UI implementation"],
-    },
-  ],
 } as const;
 
 /**

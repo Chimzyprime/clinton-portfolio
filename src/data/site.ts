@@ -76,7 +76,6 @@ export const services = [
       "Brand guidelines",
       "Visual identity applications",
     ],
-    visual: "brand",
   },
   {
     n: "02",
@@ -92,7 +91,6 @@ export const services = [
       "Social media assets",
       "Launch creatives",
     ],
-    visual: "campaign",
   },
   {
     n: "03",
@@ -106,7 +104,6 @@ export const services = [
       "Backend development",
       "Landing page implementation from existing designs",
     ],
-    visual: "code",
   },
 ] as const;
 

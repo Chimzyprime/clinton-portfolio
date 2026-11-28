@@ -1,37 +1,64 @@
-import { Check } from "lucide-react";
-import { services } from "@/data/site";
-import { Reveal } from "./Reveal";
-import { Section } from "./Section";
-import { ServiceVisual } from "./ServiceVisual";
+"use client";
 
-/** What I offer. Tools are deliberately kept out of here: see Tools.tsx. */
+import { MotionConfig, motion } from "framer-motion";
+import { services } from "@/data/site";
+import { Section } from "./Section";
+import { rise, stagger, viewport } from "./motion";
+
+/**
+ * Editorial service rows: number | title + description | capabilities,
+ * separated by hairlines. No icons or card backgrounds; hierarchy comes from
+ * type scale, weight and space. Tool names live in Tools.tsx, not here.
+ */
 export function Services() {
   return (
     <Section id="services" index="03" title="Services">
-      <ul>
-        {services.map((s, i) => (
-          <Reveal as="li" key={s.n} delay={60} className={`service-row ${i === 0 ? "border-t border-line-strong" : ""}`}>
-            <div className="grid gap-8 py-10 md:grid-cols-12 md:gap-10 lg:py-14">
-              <div className="md:col-span-7">
-                <p className="font-mono text-sm text-subtle">{s.n}</p>
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight lg:text-3xl">{s.title}</h3>
+      <MotionConfig reducedMotion="user">
+        <motion.p
+          variants={rise}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="max-w-xl text-lg text-muted"
+        >
+          Brand identity, campaign graphics and full-stack development: designed and built
+          by one person, from first idea to finished site.
+        </motion.p>
+
+        <motion.ul
+          variants={stagger(0.12)}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewport}
+          className="mt-12 border-t border-line-strong lg:mt-16"
+        >
+          {services.map((s) => (
+            <motion.li
+              key={s.n}
+              variants={rise}
+              className="service-row grid gap-x-8 gap-y-6 border-b border-line-strong py-10 md:grid-cols-12 lg:py-14"
+            >
+              <p className="service-num font-mono text-sm text-subtle md:col-span-1 md:pt-2">
+                {s.n}
+              </p>
+
+              <div className="service-main md:col-span-6">
+                <h3 className="text-2xl font-semibold tracking-tight lg:text-3xl">{s.title}</h3>
                 <p className="mt-4 max-w-[34em] text-muted">{s.description}</p>
-                <ul className="mt-6 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              </div>
+
+              <div className="md:col-span-5 lg:pl-6">
+                <p className="label">Capabilities</p>
+                <ul className="mt-4 space-y-2 text-sm text-muted">
                   {s.capabilities.map((c) => (
-                    <li key={c} className="flex items-start gap-2 text-sm text-muted">
-                      <Check size={14} strokeWidth={2} aria-hidden="true" className="mt-0.5 shrink-0 text-subtle" />
-                      {c}
-                    </li>
+                    <li key={c}>{c}</li>
                   ))}
                 </ul>
               </div>
-              <div className="md:col-span-5">
-                <ServiceVisual kind={s.visual} />
-              </div>
-            </div>
-          </Reveal>
-        ))}
-      </ul>
+            </motion.li>
+          ))}
+        </motion.ul>
+      </MotionConfig>
     </Section>
   );
 }

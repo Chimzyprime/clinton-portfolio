@@ -49,8 +49,8 @@ export const site = {
     { label: "X", handle: "@chimzyprime", href: "https://x.com/chimzyprime" },
     {
       label: "LinkedIn",
-      handle: "clinton-nwachukwu",
-      href: "https://www.linkedin.com/in/clinton-nwachukwu",
+      handle: "nwachukwu-clinton",
+      href: "https://www.linkedin.com/in/nwachukwu-clinton/",
     },
     {
       label: "GitHub",

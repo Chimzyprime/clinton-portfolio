@@ -28,7 +28,7 @@ export function About() {
 
         {/* Two equal halves */}
         <div className="about-halves mt-12 lg:mt-16">
-          <div className="flex flex-col items-center text-center">
+          <div className="about-left">
             <Reveal className="about-portrait">
               <Image
                 src={portrait.src}
@@ -45,17 +45,17 @@ export function About() {
             </Reveal>
           </div>
 
-          <div className="mx-auto max-w-[34em] text-center lg:text-left">
+          <div className="about-right mx-auto max-w-[34em] text-center lg:mx-0 lg:max-w-[30em] lg:text-left">
             <Reveal delay={80}>
-              <h3 className="text-[clamp(1.5rem,2.8vw,2.25rem)] font-bold leading-[1.1] tracking-[-0.03em]">
+              <h3 className="text-[clamp(1.5rem,3.2vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.03em]">
                 {about.heading}
               </h3>
             </Reveal>
             <Reveal delay={160}>
-              <p className="mt-6 text-lg text-text-secondary">{about.intro}</p>
+              <p className="mt-6 text-lg text-text-secondary lg:mt-8 lg:text-xl lg:leading-relaxed">{about.intro}</p>
             </Reveal>
             <Reveal delay={240}>
-              <p className="mt-4 text-lg text-text-secondary">{about.paragraph}</p>
+              <p className="mt-4 text-lg text-text-secondary lg:text-xl lg:leading-relaxed">{about.paragraph}</p>
             </Reveal>
           </div>
         </div>

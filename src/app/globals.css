@@ -555,11 +555,18 @@
 
 .about-halves { display: grid; gap: 2.5rem; }
 @media (min-width: 1024px) {
-  .about-halves { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-halves { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: stretch; }
 }
+.about-left { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; width: min(100%, 220px); }
+/* Desktop: the portrait fills whatever height the intro text sets, so the
+   portrait top lines up with the heading and the location line with the
+   last line of text. Width follows the height to keep a 4:5 frame. */
+@media (min-width: 1024px) {
+  .about-left { display: grid; grid-template-rows: minmax(200px, 1fr) auto; justify-items: center; row-gap: 1.5rem; }
+  .about-left > :first-child { height: 100%; width: auto; max-width: 100%; aspect-ratio: 4 / 5; min-height: 0; }
+}
 .about-portrait img { filter: grayscale(1) contrast(1.05); }
-@media (min-width: 1024px) { .about-portrait { width: min(100%, 280px); } }
 @media (max-width: 1023px) {
   .reveal-up.from-left { transform: translateX(56px); }
   .reveal-up.from-left.is-shown { transform: none; }

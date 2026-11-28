@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Reveal } from "./Reveal";
 
 interface Principle {
   n: string;
@@ -25,15 +24,17 @@ export function ApproachTimeline({ principles }: { principles: readonly Principl
     if (!el) return;
     const nodes = Array.from(el.querySelectorAll<HTMLElement>(".tl-node"));
 
+    // Each stop (and its card) turns on when the light reaches it. This is
+    // tied to scroll position, so it also works with reduced motion on:
+    // there it simply switches on with no sliding or easing (see CSS).
     const paint = (p: number, passed: (n: HTMLElement) => boolean) => {
       el.style.setProperty("--p", String(p));
-      nodes.forEach((n) => n.toggleAttribute("data-passed", passed(n)));
+      nodes.forEach((n) => {
+        const on = passed(n);
+        n.toggleAttribute("data-passed", on);
+        n.parentElement?.toggleAttribute("data-passed", on);
+      });
     };
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      paint(1, () => true);
-      return;
-    }
 
     let raf = 0;
     const update = () => {
@@ -67,15 +68,11 @@ export function ApproachTimeline({ principles }: { principles: readonly Principl
           return (
             <li key={p.n} className="tl-item">
               <span className="tl-node" aria-hidden="true" />
-              <Reveal
-                from={right ? "right" : "left"}
-                delay={60}
-                className={`tl-card ${right ? "tl-right" : "tl-left"}`}
-              >
+              <div className={`tl-card reveal-up ${right ? "from-right tl-right" : "from-left tl-left"}`}>
                 <p className="font-mono text-sm text-text-muted">{p.n}</p>
                 <p className="mt-2 text-lg font-semibold tracking-tight">{p.title}</p>
                 <p className="mt-2 text-text-secondary">{p.body}</p>
-              </Reveal>
+              </div>
             </li>
           );
         })}

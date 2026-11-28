@@ -583,5 +583,10 @@
   .tl ol { gap: 4rem; }
 }
 .tl-card { max-width: 26em; }
+/* The card appears when the light reaches its stop (data-passed is set in JS). */
+.tl-item[data-passed] .tl-card.reveal-up { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .tl-card.reveal-up { transform: none !important; }
+}
 .about-fact { display: flex; flex-direction: column; gap: 0.25rem; padding-block: 1rem; border-top: 1px solid var(--border); }
 .about-fact:first-child { border-top: none; padding-top: 0; }

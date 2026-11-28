@@ -555,7 +555,7 @@
 
 .about-halves { display: grid; gap: 2.5rem; }
 @media (min-width: 1024px) {
-  .about-halves { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-halves { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
 }
 .about-portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 1rem; width: min(100%, 220px); }
 .about-portrait img { filter: grayscale(1) contrast(1.05); }

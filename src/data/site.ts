@@ -37,7 +37,7 @@ export const site = {
   location: "Umudike, Abia State, Nigeria",
   email: "chimzyprime@gmail.com",
   intro:
-    "A multidisciplinary creative and technical builder working across brand identity, campaign design, frontend development and technical writing.",
+    "A multidisciplinary creative and technical builder working across brand identity, campaign design and frontend development.",
   /** Hero copy, as written in the creative brief. */
   hero: {
     headline: "I build brands and digital experiences.",
@@ -106,14 +106,6 @@ export const services = [
     ],
   },
 ] as const;
-
-export const book = {
-  title: "UAV Software Development",
-  description:
-    "A technical reference for UAV software development, self-published on Amazon KDP as a paperback and a Kindle eBook.",
-  published: "September–October 2026",
-  // href: "https://www.amazon.com/...", // add the Amazon link and it will render
-} as const;
 
 /** Tools grouped by discipline. Keep this list to things you actually use. */
 /**

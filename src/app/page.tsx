@@ -3,7 +3,6 @@ import { WebBuilds } from "@/components/WebBuilds";
 import { DesignWork } from "@/components/DesignWork";
 import { About } from "@/components/About";
 import { Services } from "@/components/Services";
-import { Writing } from "@/components/Writing";
 import { Tools } from "@/components/Tools";
 import { Contact } from "@/components/Contact";
 
@@ -17,7 +16,6 @@ export default function Home() {
       <DesignWork />
       <About />
       <Services />
-      <Writing />
       <Tools />
       <Contact />
     </>

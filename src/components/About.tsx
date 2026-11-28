@@ -79,17 +79,19 @@ export function About() {
               What I work across
             </h3>
           </Reveal>
-          <div className="mx-auto mt-10 grid max-w-3xl gap-10 sm:grid-cols-2 sm:gap-16">
+          <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2 sm:gap-6">
             {about.capabilities.map((group, gi) => (
               <Reveal key={group.heading} delay={80 + gi * 100}>
-                <p className="text-lg font-semibold tracking-tight">{group.heading}</p>
-                <ul className="mt-4">
-                  {group.items.map((item) => (
-                    <li key={item} className="about-fact text-text-secondary">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <div className="capability-card h-full rounded-2xl border border-line bg-surface p-6 sm:p-8">
+                  <p className="text-lg font-semibold tracking-tight">{group.heading}</p>
+                  <ul className="mt-4">
+                    {group.items.map((item) => (
+                      <li key={item} className="about-fact text-text-secondary">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </Reveal>
             ))}
           </div>

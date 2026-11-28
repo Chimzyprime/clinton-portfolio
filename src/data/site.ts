@@ -57,6 +57,11 @@ export const site = {
       handle: "Chimzyprime",
       href: "https://github.com/Chimzyprime",
     },
+    {
+      label: "Pinterest",
+      handle: "chimarokenwachukwu",
+      href: "https://www.pinterest.com/chimarokenwachukwu",
+    },
   ],
 } as const;
 

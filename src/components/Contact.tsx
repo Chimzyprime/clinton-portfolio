@@ -17,7 +17,7 @@ function LinkedInIcon() {
   );
 }
 
-function Brand({ name }: { name: "github" | "x" }) {
+function Brand({ name }: { name: "github" | "x" | "pinterest" }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d={brandIcons[name]} />
@@ -32,6 +32,7 @@ const icons = [
   { label: "LinkedIn", href: href("LinkedIn"), icon: <LinkedInIcon />, external: true },
   { label: "GitHub", href: href("GitHub"), icon: <Brand name="github" />, external: true },
   { label: "X", href: href("X"), icon: <Brand name="x" />, external: true },
+  { label: "Pinterest", href: href("Pinterest"), icon: <Brand name="pinterest" />, external: true },
 ];
 
 /**
